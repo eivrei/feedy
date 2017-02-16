@@ -8,18 +8,17 @@ from shutil import copyfile
 
 class PptxToXml:
     # INPUTS:
-    # pptx_loc - location of pptx file to be converted
-    # save_dir - directory in which converted zip file is to be extracted
+    # pptx_name - name of pptx file to be converted
     def __init__(self, pptx_name):
-        self.pptx_name = pptx_name  # self.pptx_dir - name of the pptx file
+        self.pptx_name = pptx_name
         self.zip_name = None
 
     # Creates a new .zip file based on .pptx
     def copy_and_rename(self):
         pos = self.pptx_name.index('.')
-        pptx_name = self.pptx_name[:pos]
+        pptx_basename = self.pptx_name[:pos]  # pptx_name - name of pptx file minus extension name
 
-        zip_name = 'zip_' + pptx_name + '.zip'  # zip_name - name of converted zip file
+        zip_name = 'zip_' + pptx_basename + '.zip'  # zip_name - name of converted zip file
         copyfile('temp\\' + self.pptx_name, 'temp\\' + zip_name)
 
         self.zip_name = zip_name
@@ -35,7 +34,7 @@ class PptxToXml:
         pass
 
 
-if __name__ == '__main__':
-    pptxToXml = PptxToXml('test_1.pptx')
-    pptxToXml.copy_and_rename()
-    pptxToXml.extract_zip_file()
+# if __name__ == '__main__':
+#     pptxToXml = PptxToXml('temp\\test_1.pptx')
+#     pptxToXml.copy_and_rename()
+#     pptxToXml.extract_zip_file()
