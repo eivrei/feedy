@@ -2,7 +2,6 @@
 
 
 from zipfile import ZipFile
-import os
 from shutil import copyfile
 
 
@@ -28,7 +27,7 @@ class PptxToXml:
 
         self.dest_zip_dir = self.zip_folder + zip_dir
 
-    # Extracts zip-file to directory indicated in constructor
+    # Extracts zip-file to folder indicated by self.extraction_folder
     def extract_zip_file(self):
         with ZipFile(self.dest_zip_dir, 'r') as zip_file:
             zip_file.extractall(self.extraction_folder)
