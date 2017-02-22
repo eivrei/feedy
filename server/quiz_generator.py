@@ -12,5 +12,8 @@ class QuizGenerator:
     #       - remove slides only containing title
     #       - remove lines containing just space
     #       - remove lines containing just symbols
+    #       - merge slides with same or similar title
+    #       - prune symbols (commas, quotation marks, etc.)
+    #       - remove grammatical words (i.e. non-lexical words)
 
     # Some methods here for making quiz
