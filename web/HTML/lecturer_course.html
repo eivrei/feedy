@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
-<body>
-
-<form action="../php/upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload presentation" name="submit">
-</form>
-
-</body>
+	<head>
+		<meta charset="UTF-8"> 
+		<link rel="stylesheet" href="../style.css" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+	</head>
+	<body>
+		
+		<form action="../php/upload.php" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+			Select .pptx file to upload:
+			<input type="file" name="fileToUpload" id="fileToUpload">
+			<input type="submit" value="Upload" name="submit">
+		</form>
+		
+	</body>
 </html>
