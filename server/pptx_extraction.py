@@ -1,8 +1,9 @@
 from pptx import Presentation
 
-def extract(filename):
+
+def extract(filepath):
     # Generates a list on the form [[title, point, point, ...], [title, point, point, ...], ...]
-    prs = Presentation('./temp/' + filename)
+    prs = Presentation(filepath)
     all_data = []
     for slide in prs.slides:
         slide_data = []
@@ -14,7 +15,9 @@ def extract(filename):
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
                     # If point is subpoint -> make new question with subpoints as points
-                    if paragraph.level > last_level and paragraph.level == 1:
+                    if paragraph.level > 1:
+                        continue
+                    if paragraph.level > last_level:
                         sub_points.extend([slide_data[-1], run.text])
                     elif paragraph.level == 1:
                         sub_points.append(run.text)
@@ -27,3 +30,4 @@ def extract(filename):
                     last_level = paragraph.level
         all_data.append(slide_data)
     return all_data
+# print(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_2.pptx"))
