@@ -41,9 +41,6 @@ class QuizGenerator:
             if not hasMerged:
                 merged_data.append(topic_data)
 
-
-        self.data = merged_data
-
         for topic_data in merged_data:
             cleaned_data.append([])
 
@@ -78,6 +75,10 @@ class QuizGenerator:
         pass
         # TODO: Send quiz to database
 
+    # def print_quiz(self):
+    #     with open("quiz.txt", 'w') as file:
+
+
 
 # Removes all ENGLISH stopwords as defined in nltk stopwords list, and all ENGLISH function words
 def rem_grammatical_words(text, language):
@@ -104,3 +105,11 @@ def rem_duplicates(text):
     unique_text = ' '.join(OrderedDict.fromkeys(text.split()))
 
     return unique_text
+
+if __name__ == '__main__':
+    from server.pptx_extraction import extract
+    quizGenerator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
+    quizGenerator.rem_empty_topics()
+    quizGenerator.clean_data()
+    quizGenerator.make_quiz()
+    print(quizGenerator.quiz)
