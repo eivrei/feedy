@@ -7,6 +7,7 @@ def extract(filepath):
     all_data = []
     for slide in prs.slides:
         slide_data = []
+        number_of_sub_questions = 0
         for shape in slide.shapes:
             sub_points = []
             last_level = 0
@@ -19,6 +20,7 @@ def extract(filepath):
                 # If point is subpoint -> make new question with subpoints as points
                 if paragraph.level > last_level:
                     sub_points.extend([slide_data[-1], paragraph_text])
+                    number_of_sub_questions += 1
                 elif paragraph.level == 1:
                     sub_points.append(paragraph_text)
                 elif paragraph.level < last_level:
@@ -28,6 +30,6 @@ def extract(filepath):
                 else:
                     slide_data.append(paragraph_text)
                 last_level = paragraph.level
-        all_data.append(slide_data)
+        all_data.insert(len(all_data) - number_of_sub_questions, slide_data)
     return all_data
 print(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
