@@ -16,9 +16,13 @@ class QuizGenerator:
         self.data = data
         self.quiz_language = quiz_language
         self.quiz = None
+        self.rem_empty_topics()
+        self.clean_data()
+        self.make_quiz()
+        #self.send_quiz()
 
     def rem_empty_topics(self):
-        self.data = [topic_data for topic_data in self.data if len(topic_data) < 2]
+        self.data = [topic_data for topic_data in self.data if len(topic_data) > 2]
 
     # Cleaning the data in preparation of quiz generation
     def clean_data(self):
@@ -75,8 +79,12 @@ class QuizGenerator:
         pass
         # TODO: Send quiz to database
 
-    # def print_quiz(self):
-    #     with open("quiz.txt", 'w') as file:
+    def print_quiz(self):
+        with open("quiz.txt", 'w') as file:
+            for q in self.quiz:
+                file.write("Topic: " + q[0] + "\n")
+                file.write(", ".join(word for word in q[1:]))
+                file.write("\n\n")
 
 
 
@@ -106,10 +114,11 @@ def rem_duplicates(text):
 
     return unique_text
 
-if __name__ == '__main__':
-    from server.pptx_extraction import extract
-    quizGenerator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
-    quizGenerator.rem_empty_topics()
-    quizGenerator.clean_data()
-    quizGenerator.make_quiz()
-    print(quizGenerator.quiz)
+# if __name__ == '__main__':
+#     from server.pptx_extraction import extract
+#     quizGenerator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
+#     quizGenerator.rem_empty_topics()
+#     quizGenerator.clean_data()
+#     quizGenerator.make_quiz()
+#     # quizGenerator.print_quiz()
+#     print(quizGenerator.quiz)
