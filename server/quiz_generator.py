@@ -19,7 +19,6 @@ class QuizGenerator:
         self.rem_empty_topics()
         self.clean_data()
         self.make_quiz()
-        #self.send_quiz()
 
     def rem_empty_topics(self):
         self.data = [topic_data for topic_data in self.data if len(topic_data) > 2]
@@ -75,18 +74,6 @@ class QuizGenerator:
                     quiz[len(quiz)-1].append(word)
         self.quiz = quiz
 
-    def send_quiz(self):
-        pass
-        # TODO: Send quiz to database
-
-    def print_quiz(self):
-        with open("quiz.txt", 'w') as file:
-            for q in self.quiz:
-                file.write("Topic: " + q[0] + "\n")
-                file.write(", ".join(word for word in q[1:]))
-                file.write("\n\n")
-
-
 
 # Removes all ENGLISH stopwords as defined in nltk stopwords list, and all ENGLISH function words
 def rem_grammatical_words(text, language):
@@ -119,6 +106,6 @@ def rem_duplicates(text):
 #     quizGenerator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
 #     quizGenerator.rem_empty_topics()
 #     quizGenerator.clean_data()
+#     print(quizGenerator.data)
 #     quizGenerator.make_quiz()
-#     # quizGenerator.print_quiz()
 #     print(quizGenerator.quiz)
