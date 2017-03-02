@@ -1,0 +1,7 @@
+body{
+	background-color: #eee;
+}
+
+#fileToUpload , #submitFile{
+	display: inline-block;
+}
