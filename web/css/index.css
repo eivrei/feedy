@@ -1,0 +1,25 @@
+body {
+	background-color: #eee;
+}
+h1{
+	padding-top: 50px;
+	text-align: center;
+}
+
+#buttons{
+	margin-top: 25px;
+	text-align: center;
+	align-content: center;
+}
+
+#lbutton , #sbutton{
+	height: 80px;
+	width: 400px;
+	display: inline-block;
+	text-align: center;
+	background-color: light blue;
+	margin-top: 20px;
+	padding-top: 18px;
+	font-size: 32px;
+	text-shadow: 2px 2px 20px navy;
+}

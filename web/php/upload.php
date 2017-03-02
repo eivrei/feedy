@@ -36,6 +36,23 @@ if ($uploadOk == 0) {
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+		//execute python program - no data
+		
+
+	//$disabled = explode(',', ini_get('disable_functions'));
+	//echo !in_array('exec', $disabled);
+
+
+		$relpath = "../../server/exec_return_test.py";  
+		//$relpath = "/alexanws/PU100/server/exec_return_test.py ";
+		$abspath = realpath($relpath);
+		echo $abspath;
+		echo $relpath;*/
+		echo exec(exec_return_test.py); 
+		//echo $test_output;
+		//echo exec("whoami");  -- works and returns "alexanws"
+		
+		
 		
     } else {
         echo "Sorry, there was an error uploading your file.";
