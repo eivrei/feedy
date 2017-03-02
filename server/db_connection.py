@@ -19,6 +19,7 @@ def send_quiz(lecture_id, quiz):
     finally:
         cursor.close()
         cnx.close()
+
 if __name__ == '__main__':
     send_quiz(2, "[['Data', 'ram', 'ssd', 'cpu', 'cache'], ['SSD', 'much', 'better', 'hdd', 'faster', 'expensive'],"
                  " ['Python', 'print', 'procedural', 'oriented', 'also', 'object', 'good', 'first', 'language',"
