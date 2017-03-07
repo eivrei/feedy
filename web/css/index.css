@@ -1,0 +1,44 @@
+body {
+	background-color: #eee;
+}
+
+#feedy_logo{
+	height: 40px;
+	padding-top: 7px;
+}
+
+h1{
+	padding-top: 50px;
+	text-align: center;
+}
+#intext_logo{
+	height: 40px;
+	padding-bottom: 7px;
+}
+
+#buttons{
+	margin-top: 25px;
+	text-align: center;
+}
+
+#lbutton{
+	height: 80px;
+	width: 400px;
+	display: inline-block;
+	background-color: light blue;
+	margin-top: 20px;
+	padding-top: 18px;
+	font-size: 32px;
+	text-shadow: 2px 2px 20px navy;
+}
+
+#sbutton{
+	height: 80px;
+	width: 400px;
+	display: inline-block;
+	background-color: light blue;
+	margin-top: 20px;
+	padding-top: 18px;
+	font-size: 32px;
+	text-shadow: 2px 2px 20px navy;
+}
