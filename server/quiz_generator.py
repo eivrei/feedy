@@ -5,12 +5,12 @@ import string
 
 # Class for generation of quiz from raw data
 class QuizGenerator:
-    GRAMMATICAL_WORDS = {'CC', 'DT', 'EX', 'IN', 'MD', 'PDT', 'PRP', 'PRP$', 'RP', 'TO',
+    GRAMMATICAL_WORD_TAGS = {'CC', 'DT', 'EX', 'IN', 'MD', 'PDT', 'PRP', 'PRP$', 'RP', 'TO',
                          'UH'}  # uses Penn Treebank Tagset
     STOP_WORDS = set(stopwords.words('english'))
 
     # INPUTS:
-    # data is a list containing data from each slide of the form [topic1_data, topic2_data, ...]
+    # data -- a list containing data from each slide of the form [topic1_data, topic2_data, ...]
     # where each "topicX_data"-field is of the form [topic, text_1, text_2, ...]
     def __init__(self, data, quiz_language='eng'):
         self.data = data
@@ -72,12 +72,8 @@ class QuizGenerator:
             quiz.append([topic])
             for datum in topic_data[1:]:
                 for word in datum.split():
-                    quiz[len(quiz)-1].append(word)
+                    quiz[len(quiz)-1].append((word, 1))
         self.quiz = quiz
-
-    def send_quiz(self):
-        pass
-        # TODO: Send quiz to database
 
     def print_quiz(self):
         with open("quiz.txt", 'w') as file:
@@ -87,7 +83,6 @@ class QuizGenerator:
                 file.write("\n\n")
 
 
-
 # Removes all ENGLISH stopwords as defined in nltk stopwords list, and all ENGLISH function words
 def rem_grammatical_words(text, language):
     words = word_tokenize(text)
@@ -95,7 +90,7 @@ def rem_grammatical_words(text, language):
     non_stop_words = [word for word in words if word.lower() not in QuizGenerator.STOP_WORDS]
 
     tagged_words = pos_tag(non_stop_words, lang='eng')
-    lexical_words = ' '.join([word[0] for word in tagged_words if word[1] not in QuizGenerator.GRAMMATICAL_WORDS and word[0] not in QuizGenerator.STOP_WORDS])
+    lexical_words = ' '.join([word[0] for word in tagged_words if word[1] not in QuizGenerator.GRAMMATICAL_WORD_TAGS and word[0] not in QuizGenerator.STOP_WORDS])
 
     return lexical_words
 
@@ -114,11 +109,11 @@ def rem_duplicates(text):
 
     return unique_text
 
-# if __name__ == '__main__':
-#     from server.pptx_extraction import extract
-#     quizGenerator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
-#     quizGenerator.rem_empty_topics()
-#     quizGenerator.clean_data()
-#     quizGenerator.make_quiz()
-#     # quizGenerator.print_quiz()
-#     print(quizGenerator.quiz)
+if __name__ == '__main__':
+    from server.pptx_extraction import extract
+    quiz_generator = QuizGenerator(extract("D:/Feedy/pugruppe100/server/temp/test_1.pptx"))
+    quiz_generator.rem_empty_topics()
+    quiz_generator.clean_data()
+    quiz_generator.make_quiz()
+    # quiz_generator.print_quiz()
+    print(quiz_generator.quiz)
