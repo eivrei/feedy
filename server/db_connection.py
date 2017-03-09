@@ -1,26 +1,45 @@
 import mysql.connector
 
-cnx = mysql.connector.connect(user='magnukun_pu100', password='pugruppe100',
-                              host='mysql.stud.ntnu.no',
-                              database='magnukun_pudb')
-cursor = cnx.cursor()
 
+class DatabaseConnector:
+    def __init__(self, lecture_id, quiz_data):
+        self.lecture_id = lecture_id
+        self.quiz_data = quiz_data
+        self.db_connection = mysql.connector.connect(user='magnukun_pu100', password='pugruppe100',
+                                                     host='mysql.stud.ntnu.no',
+                                                     database='magnukun_pudb')
+        self.cursor = self.db_connection.cursor()
+        self.topic_id = []
 
-def send_quiz(lecture_id, quiz):
-    try:
-        add_quiz = "INSERT INTO Quiz(QuizPlaintext, LectureID) " \
-                    "VALUES(%s, %s)"
-        args = quiz, lecture_id
-        cursor.execute(add_quiz, args)
-        cnx.commit()
-        cnx.close()
-    except Exception as error:
-        print(error)
-    finally:
-        cursor.close()
-        cnx.close()
+    def send_quiz(self):
+        try:
+            self.send_topics()
+            self.send_keywords()
+            self.db_connection.commit()
+            self.db_connection.close()
+        except Exception as error:
+            print("Error: ", error)
+            self.db_connection.rollback()
+        finally:
+            self.cursor.close()
+            self.db_connection.close()
 
-if __name__ == '__main__':
-    send_quiz(2, "[['Data', 'ram', 'ssd', 'cpu', 'cache'], ['SSD', 'much', 'better', 'hdd', 'faster', 'expensive'],"
-                 " ['Python', 'print', 'procedural', 'oriented', 'also', 'object', 'good', 'first', 'language',"
-                 " 'for-loops', 'simple', 'manage']]")
+    def send_topics(self):
+        add_topic = "INSERT INTO QuizTopic (TopicID, Text, LectureID) VALUES (NULL, %s, %s)"
+        for topic in self.quiz_data:
+            self.cursor.execute(add_topic, (topic.pop(0), self.lecture_id))
+            self.topic_id.append(self.cursor.lastrowid)
+
+    def send_keywords(self):
+        add_keyword = "INSERT INTO QuizKeyword (KeywordID, Text, Weight, TopicID) VALUES (NULL, %s, %s, %s)"
+        index = 0
+        for topic in self.quiz_data:
+            for keyword in topic:
+                self.cursor.execute(add_keyword, (keyword, 1, self.topic_id[index]))
+            index += 1
+
+# if __name__ == '__main__':
+#     dbConnector = DatabaseConnector(2, [['Data', 'ram', 'ssd', 'cpu', 'cache'], ['SSD', 'much', 'better', 'hdd',
+#                                         'faster', 'expensive'], ['Python', 'print', 'procedural', 'oriented', 'also',
+#                                         'object', 'good', 'first', 'language', 'for-loops', 'simple', 'manage']])
+#     dbConnector.send_quiz()
