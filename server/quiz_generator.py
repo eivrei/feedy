@@ -111,7 +111,8 @@ def rem_duplicates(text):
 
 if __name__ == '__main__':
     from server.pptx_extraction import extract
-    quiz_generator = QuizGenerator(extract("D:/Feedy/pugruppe100/server/temp/test_1.pptx"))
+    # quiz_generator = QuizGenerator(extract("D:/Feedy/pugruppe100/server/temp/test_1.pptx"))
+    quiz_generator = QuizGenerator(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
     quiz_generator.rem_empty_topics()
     quiz_generator.clean_data()
     quiz_generator.make_quiz()

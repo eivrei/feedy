@@ -34,12 +34,15 @@ class DatabaseConnector:
         add_keyword = "INSERT INTO QuizKeyword (KeywordID, Text, Weight, TopicID) VALUES (NULL, %s, %s, %s)"
         index = 0
         for topic in self.quiz_data:
-            for keyword in topic:
-                self.cursor.execute(add_keyword, (keyword, 1, self.topic_id[index]))
+            for keyword, weight in topic:
+                self.cursor.execute(add_keyword, (keyword, weight, self.topic_id[index]))
             index += 1
 
-# if __name__ == '__main__':
-#     dbConnector = DatabaseConnector(2, [['Data', 'ram', 'ssd', 'cpu', 'cache'], ['SSD', 'much', 'better', 'hdd',
-#                                         'faster', 'expensive'], ['Python', 'print', 'procedural', 'oriented', 'also',
-#                                         'object', 'good', 'first', 'language', 'for-loops', 'simple', 'manage']])
-#     dbConnector.send_quiz()
+if __name__ == '__main__':
+    dbConnector = DatabaseConnector(2, [['Data', ('ram', 3), ('ssd', 2), ('cpu', 1), ('cache', 1)], ['SSD', ('much', 1),
+                                        ('better', 1), ('hdd', 1), ('faster', 1), ('expensive', 1)], ['Python',
+                                        ('print', 1), ('procedural', 1), ('oriented', 1), ('also', 1), ('object', 1),
+                                        ('good', 1), ('first', 1), ('language', 1), ('for-loops', 1), ('simple', 1),
+                                        ('manage', 1)]]
+)
+    dbConnector.send_quiz()
