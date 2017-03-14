@@ -33,17 +33,19 @@ class QuizGenerator:
             self.data.pop(0)
 
         merged_data = []
+        merged_topics = []
         for topic_id in range(len(self.data)):
-            hasMerged = False
             topic_data = self.data[topic_id]
             topic = topic_data[0]
+            merged_data.append(topic_data)
             for other_topic_data in self.data[topic_id+1:]:
                 other_topic = other_topic_data[0]
+                if other_topic in merged_topics:  # If already merged into "merged_data"
+                    continue
                 if topic == other_topic:
-                    merged_data.append(topic_data + other_topic_data[1:])
-                    hasMerged = True
-            if not hasMerged:
-                merged_data.append(topic_data)
+                    merged_data[-1] += other_topic_data[1:]
+
+            merged_topics = [topic_data[0] for topic_data in merged_data]
 
         for topic_data in merged_data:
             cleaned_data.append([])
