@@ -7,6 +7,7 @@
 .idea/misc.xml
 .idea/pugruppe100.iml
 .idea/modules.xml
+.idea/sqldialects.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
