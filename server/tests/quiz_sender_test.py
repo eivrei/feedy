@@ -1,10 +1,10 @@
 import unittest
-from server.db_connection import *
+from server.quiz_sender import *
 
 
-class DbConnectionTest(unittest.TestCase):
+class QuizSenderTest(unittest.TestCase):
     def setUp(self):
-        self.db_connection = DatabaseConnector(2, [['Data', ('ram', 3), ('ssd', 2), ('cpu', 1), ('cache', 1)], ['SSD',
+        self.db_connection = QuizSender(2, [['Data', ('ram', 3), ('ssd', 2), ('cpu', 1), ('cache', 1)], ['SSD',
                                               ('much', 1), ('better', 1), ('hdd', 1), ('faster', 1), ('expensive', 1)],
                                               ['Python', ('print', 1), ('procedural', 1), ('oriented', 1), ('also', 1),
                                               ('object', 1), ('good', 1), ('first', 1), ('language', 1),
