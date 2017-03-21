@@ -18,7 +18,7 @@ class QuizSenderTest(unittest.TestCase):
 
     def test_send_topics(self):
         try:
-            get_topic = "SELECT Text FROM QuizTopic WHERE TopicID = %s AND LectureID = %s"
+            get_topic = "SELECT topic FROM QuizTopic WHERE topic_id = %s AND lecture_id = %s"
             self.db_connection.cursor.execute(get_topic, (self.db_connection.topic_id[0], self.db_connection.lecture_id))
             result1 = self.db_connection.cursor.fetchone()[0]
 
@@ -36,7 +36,7 @@ class QuizSenderTest(unittest.TestCase):
 
     def test_send_keyword(self):
         try:
-            get_keyword = "SELECT Text FROM QuizKeyword WHERE TopicID = %s AND Text = %s"
+            get_keyword = "SELECT keyword FROM QuizKeyword WHERE topic_id = %s AND keyword = %s"
             self.db_connection.cursor.execute(get_keyword, (self.db_connection.topic_id[0], "ram"))
             result1 = self.db_connection.cursor.fetchone()[0]
 
