@@ -10,11 +10,11 @@
 		die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = "SELECT Course.CourseCode, Course.CourseName, Parallel.Programmes FROM Lecturer
-			INNER JOIN LecturerParallel ON Lecturer.UserID = LecturerParallel.LecturerID
-			INNER JOIN Parallel ON LecturerParallel.ParallelID = Parallel.ParallelID
-			INNER JOIN Course ON Parallel.CourseCode = Course.CourseCode
-			WHERE Lecturer.Username='$id'";
+	$sql = "SELECT Course.coursecode, Course.coursename, Parallel.programmes FROM Lecturer
+			INNER JOIN LecturerParallel ON Lecturer.lecturer_id = LecturerParallel.lecturer_id
+			INNER JOIN Parallel ON LecturerParallel.parallel_id = Parallel.parallel_id
+			INNER JOIN Course ON Parallel.coursecode = Course.coursecode
+			WHERE Lecturer.username='$id'";
 
 	$result = $conn->query($sql);
 	
@@ -22,7 +22,7 @@
 	
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-			echo $row["CourseCode"]."|".$row["CourseName"]."|".$row["Programmes"]."|";
+			echo $row["coursecode"]."|".$row["coursename"]."|".$row["programmes"]."|";
 		}
 	}
 	else {
