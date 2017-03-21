@@ -3,7 +3,7 @@ import mysql.connector
 
 
 class DbConnector(ABC):
-    db_connection = mysql.connector.connect(user='magnukun_pu100', password='pugruppe100',
+    db_connection = mysql.connector.connect(user='magnukun_secure', password='YEa2VJXHxmWQ',
                                             host='mysql.stud.ntnu.no',
                                             database='magnukun_pudb')
     cursor = db_connection.cursor()

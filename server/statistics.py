@@ -2,13 +2,13 @@ from server.db_connector import DbConnector
 from numpy import std
 
 '''
-For hvert topic skal følgende genereres:
-    - antall svar
-    - gjennomsnittsprosent
-    - et tall på sprik i svar
-    - keywords med en svarprosent på mindre enn X %
+For each topic we must generate:
+    - number of answers
+    - average percent
+    - standard deviation
+    - keywords with a total answer percent on less than 20% (numAnswered/answers_per_topic < 0.2)
 
-Lagres i databasen på formen [topic1, numAnswered, avgPercent, gapNumber, keyword1, keyword2][topic2....]
+Statistics are saved in db as "[topic1, answers_per_topic, avgPercent, standard deviation, keyword1, keyword2][topic2....]"
 '''
 
 
@@ -38,10 +38,10 @@ class Statistics(DbConnector):
             self.close()
 
     def get_answers(self):
-                get_answers = "SELECT CorrectPercent, qt.Text " \
+                get_answers = "SELECT correctPercent, topic " \
                               "FROM QuizAnswer AS qa " \
                               "Natural JOIN QuizTopic AS qt " \
-                              "WHERE qt.LectureID=%s ORDER BY qt.TopicID ASC, qa.AnswerID ASC" % self.lecture_id
+                              "WHERE qt.lecture_id=%s ORDER BY qt.topic_id ASC, qa.answer_id ASC" % self.lecture_id
                 self.cursor.execute(get_answers)
 
                 last_topic = ""
@@ -55,7 +55,6 @@ class Statistics(DbConnector):
                         self.all_topics.append(topic_text)
                     topic_answers.append(correct_percent)
                 self.all_answers.append(topic_answers)
-                print("all_topics: ", self.all_topics, "\nall_answers: ", self.all_answers)
 
     def get_avg_percents(self):
         for topic in self.all_answers:
@@ -69,17 +68,16 @@ class Statistics(DbConnector):
             self.gap.append(round(std(self.all_answers[topic]), 1))
 
     def get_answers_per_topic(self):
-        query = "SELECT qa.TopicID, COUNT(*) FROM QuizAnswer AS qa NATURAL JOIN QuizTopic AS qt " \
-                "WHERE qt.LectureID = %s GROUP BY qa.TopicID" % self.lecture_id
+        query = "SELECT qa.topic_id, COUNT(*) FROM QuizAnswer AS qa NATURAL JOIN QuizTopic AS qt " \
+                "WHERE qt.lecture_id = %s GROUP BY qa.topic_id" % self.lecture_id
         self.cursor.execute(query)
         for topic_id, answers in self.cursor:
             self.answers_per_topic.append(answers)
-        print("answers_per_topic: ", self.answers_per_topic)
 
     def get_low_scoring_keywords(self):
-        query = "SELECT qk.Text, NumAnswered, qt.Text " \
-                "FROM QuizKeyword as qk JOIN QuizTopic AS qt ON qk.TopicID = qt.TopicID " \
-                "WHERE LectureID = %s ORDER BY qk.TopicID ASC" % self.lecture_id
+        query = "SELECT keyword, numAnswered, topic " \
+                "FROM QuizKeyword as qk JOIN QuizTopic AS qt ON qk.topic_id = qt.topic_id " \
+                "WHERE lecture_id = %s ORDER BY qk.topic_id ASC" % self.lecture_id
         self.cursor.execute(query)
 
         last_topic = ""
@@ -93,18 +91,15 @@ class Statistics(DbConnector):
             if (num_answered/self.answers_per_topic[self.all_topics.index(topic)]) <= 0.20:
                 keywords.append(keyword)
         self.low_scoring_keywords.append(keywords)
-        print("low_scoring_keywords: ", self.low_scoring_keywords)
 
     def send_statistics(self):
         statistics = ""
         for i in range(len(self.all_topics)):
             statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + str(self.avgPercents[i]) + "," + \
                           str(self.gap[i]) + ("," if self.low_scoring_keywords[i] else "") + ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
-        print(statistics)
-        s = "hei"
-        query = "UPDATE Lecture SET Statistics = %s WHERE LectureID = %s"
+        query = "UPDATE Lecture SET lectureStats = %s WHERE lecture_id = %s"
         self.cursor.execute(query, (statistics, self.lecture_id))
 
-if __name__ == '__main__':
-    statistics = Statistics(2)
-    statistics.run()
+# if __name__ == '__main__':
+#     statistics = Statistics(2)
+#     statistics.run()
