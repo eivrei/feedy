@@ -1,8 +1,8 @@
 <?php
 
-	$db_username = "magnukun_pu100";
-	$db_password = "pugruppe100";
 	$servername = "mysql.stud.ntnu.no";
+	$db_username = "magnukun_secure";
+	$db_password = "YEa2VJXHxmWQ";
 	$db_name = "magnukun_pudb";
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 
@@ -16,7 +16,7 @@
 	/*
 	redirect($page);
 	*/
-	$sql = "SELECT * FROM Lecturer WHERE Lecturer.Username= '$login_username' AND Lecturer.Password = '$login_password'";
+	$sql = "SELECT * FROM Lecturer WHERE Lecturer.username= '$login_username' AND Lecturer.password = '$login_password'";
 	$userlist = $conn->query($sql);
 	
 	session_start();
@@ -25,7 +25,7 @@
 	if ($userlist->num_rows > 0) {
 		$_SESSION['login_user']= $login_username; //saved session variable for username - might not be needed
 		$row = $userlist->fetch_assoc();
-		$username = $row["Username"];
+		$username = $row["username"];
 		echo $username;
 	}
 	else {

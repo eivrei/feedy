@@ -21,6 +21,6 @@ $(document).ready(function() {
 });
 
 
-		/*$("#tr_courseCode").append("<td>" + courses[i] + "</td>");
+		/*$("#tr_course_code").append("<td>" + courses[i] + "</td>");
 		$("#tr_courseName").append("<td>" + courses[i+1] + "</td>");
 		$("#tr_programmes").append("<td>" + courses[i+2] + "</td>");*/
