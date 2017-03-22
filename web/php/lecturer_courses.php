@@ -9,11 +9,13 @@
 	if($conn->connect_error){
 		die("Connection failed: " . $conn->connect_error);
 	}
-
-	$sql = "SELECT Course.course_code, Course.courseName, Parallel.programmes FROM Lecturer
-			INNER JOIN LecturerParallel ON Lecturer.lecturer_id = LecturerParallel.lecturer_id
-			INNER JOIN Parallel ON LecturerParallel.parallel_id = Parallel.parallel_id
-			INNER JOIN Course ON Parallel.course_code = Course.course_code
+	//Distinct not needed?
+	$sql = "SELECT DISTINCT Course.course_code, Course.courseName, Parallel.programmes, Parallel.parallel_id FROM Lecturer 
+			INNER JOIN LectureLecturer ON Lecturer.lecturer_id = LectureLecturer.lecturer_id 
+			INNER JOIN Lecture ON LectureLecturer.lecture_id = Lecture.lecture_id 
+			INNER JOIN LectureParallel ON Lecture.lecture_id = LectureParallel.lecture_id 
+			INNER JOIN Parallel ON LectureParallel.parallel_id = Parallel.parallel_id 
+			INNER JOIN Course ON Parallel.course_code = Course.course_code 
 			WHERE Lecturer.username='$id'";
 
 	$result = $conn->query($sql);
@@ -22,7 +24,7 @@
 	
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-			echo $row["course_code"]."|".$row["courseName"]."|".$row["programmes"]."|";
+			echo $row["course_code"]."|".$row["courseName"]."|".$row["programmes"]."|".$row["parallel_id"]."|";
 		}
 	}
 	else {
