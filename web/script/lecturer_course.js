@@ -21,11 +21,11 @@ function createButtonString(type, lecture_id, date = "null") { //give date as ar
 	var buttonString = "<button id='" + lecture_id + "' class='btn btn-lg btn-primary btn-block' type='button'" ; //note: no end >
 	switch(type) {
 		case "view":
-			buttonString += "value=" + lecture_id + " onclick = view_quiz(this)>View";
+			buttonString += "value=" + lecture_id + " onclick = view_quiz(this)>View quiz";
 			console.log("create view", buttonString);
 			break;
 		case "delete":
-			buttonString += "value=" +lecture_id + " onclick = delete_quiz(this)>Delete";
+			buttonString += "value=" +lecture_id + " onclick = delete_quiz(this)>Delete quiz";
 			break;
 		case "upload": //create full form instead? Copy from hardcoded lecturer/course.html, choose file will be made here as well
 			buttonString += "value="+ lecture_id + "_" +date+ " onclick = upload_pptx(this)>Upload placeholder"; //see above
@@ -49,7 +49,7 @@ function upload_pptx(button) { //uses form action for upload.php
 	console.log("in upload");
 }
 
-function createLectureTable(data) { //to be added to document.ready()
+function createLectureTable(data) { 
 
 	var lectureContent = data.split("|"); //remember to check if pop is needed
 	var toAppend = "<div>"; //make divs possibly with id for each
@@ -58,7 +58,8 @@ function createLectureTable(data) { //to be added to document.ready()
 		var lecture_id = lectureContent[i];
 		var date = lectureContent[i+1];
 		var name = lectureContent[i+2];
-		toAppend+= date; //move furter down?
+		console.log("name =" ,name);
+		toAppend+= "<a href='statistics.html#" + lecture_id +"'>" + date + "</a>"; //link course name to statistics page
 		if (name != "NULL") { 
 			toAppend += " " + name;  
 			toAppend += " " + createButtonString("view",lecture_id); //create view button value = lecture_id

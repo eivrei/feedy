@@ -14,14 +14,14 @@ if($conn->connect_error){
 	}
 	//distinct not needed?
 	
-	$sql = "SELECT DISTINCT Course.course_code, Course.courseName, Parallel.parallel_id, Lecturer.lecturer_id, Lecture.lecture_id, Lecture.lectureDate FROM Lecturer 
+	$sql = "SELECT DISTINCT Parallel.parallel_id, Lecturer.lecturer_id, Lecture.lecture_id, Lecture.lectureDate, Lecture.lectureName FROM Lecturer 
 		INNER JOIN LectureLecturer ON Lecturer.lecturer_id = LectureLecturer.lecturer_id 
 		INNER JOIN Lecture ON LectureLecturer.lecture_id = Lecture.lecture_id 
 		INNER JOIN LectureParallel ON Lecture.lecture_id = LectureParallel.lecture_id 
 		INNER JOIN Parallel ON LectureParallel.parallel_id = Parallel.parallel_id 
 		INNER JOIN Course ON Parallel.course_code = Course.course_code 
 		WHERE Parallel.parallel_id = '$parallel' AND Parallel.course_code = '$course'";
-
+	//does not check lecturer id variable - intentional/unneeded?
 	$result = $conn->query($sql);
 	
 	session_start();
@@ -36,8 +36,7 @@ if($conn->connect_error){
 			{
 				echo $row["lecture_id"]."|".$row["lectureDate"]."|".$row["lectureName"];
 			}
-			//echo $row["lectureDate"];		
-			}
+		}
 	}
 	else {
 		echo "NO DATA";
