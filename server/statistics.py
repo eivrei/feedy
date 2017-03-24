@@ -25,12 +25,16 @@ class Statistics(DbConnector):
     def run(self):
         try:
             self.get_answers()
-            self.get_avg_percents()
-            self.get_gap()
-            self.get_answers_per_topic()
-            self.get_low_scoring_keywords()
-            self.send_statistics()
-            self.commit()
+            # If self.all_answers == [[]], then there are no answers to this lecture
+            if not self.all_answers[0]:
+                print("There are no answers to this lecture")
+            else:
+                self.get_avg_percents()
+                self.get_gap()
+                self.get_answers_per_topic()
+                self.get_low_scoring_keywords()
+                self.send_statistics()
+                self.commit()
         except Exception as error:
             print(error)
             self.error()
