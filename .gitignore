@@ -7,6 +7,7 @@
 .idea/misc.xml
 .idea/pugruppe100.iml
 .idea/modules.xml
+.idea/sqldialects.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -47,4 +48,4 @@ fabric.properties
 
 ## Self-defined
 .DS_Store
-__pycache__
+__pycache__/*

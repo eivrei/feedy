@@ -3,6 +3,11 @@ body {
   background-color: #eee;
 }
 
+#feedy_logo{
+  height: 40px;
+  padding-top: 7px;
+}
+
 .form-signin {
   max-width: 330px;
   padding: 15px;

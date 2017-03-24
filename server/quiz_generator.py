@@ -32,17 +32,20 @@ class QuizGenerator:
         self.data = [topic_data for topic_data in self.data if len(topic_data) > 2]
 
         merged_data = []
+        merged_topics = []
         for topic_id in range(len(self.data)):
             has_merged = False
             topic_data = self.data[topic_id]
             topic = topic_data[0]
+            merged_data.append(topic_data)
             for other_topic_data in self.data[topic_id+1:]:
                 other_topic = other_topic_data[0]
+                if other_topic in merged_topics:  # If already merged into "merged_data"
+                    continue
                 if topic == other_topic:
-                    merged_data.append(topic_data + other_topic_data[1:])
-                    has_merged = True
-            if not has_merged:
-                merged_data.append(topic_data)
+                    merged_data[-1] += other_topic_data[1:]
+
+            merged_topics = [topic_data[0] for topic_data in merged_data]
 
         for topic_data in merged_data:
             cleaned_data.append([])
@@ -113,7 +116,6 @@ class QuizGenerator:
     #             file.write(", ".join(word for word in q[1:]))
     #             file.write("\n\n")
 
-
 # Removes all ENGLISH stopwords as defined in nltk stopwords list, and all ENGLISH function words
 def rem_grammatical_words(text, language):
     stop_words = set(stopwords.words(language))
@@ -140,7 +142,6 @@ def rem_duplicates(text):
     unique_text = ' '.join(OrderedDict.fromkeys(text.split()))
 
     return unique_text
-
 
 if __name__ == '__main__':
     from server.pptx_extraction import extract
