@@ -38,6 +38,22 @@ class DatabaseConnector:
                 self.cursor.execute(add_keyword, (keyword, weight, self.topic_id[index]))
             index += 1
 
+            
+def send_quiz(lecture_id, quiz):
+    try:
+        add_quiz = "INSERT INTO Quiz(QuizPlaintext, LectureID) " \
+                    "VALUES(%s, %s)"
+        args = quiz, lecture_id
+        cursor.execute(add_quiz, args)
+        cnx.commit()
+        cnx.close()
+    except Exception as error:
+        print(error)
+    finally:
+        cursor.close()
+        cnx.close()
+
+
 if __name__ == '__main__':
     dbConnector = DatabaseConnector(2, [['Data', ('ram', 3), ('ssd', 2), ('cpu', 1), ('cache', 1)], ['SSD', ('much', 1),
                                         ('better', 1), ('hdd', 1), ('faster', 1), ('expensive', 1)], ['Python',
