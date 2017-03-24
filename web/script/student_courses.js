@@ -9,9 +9,13 @@ $(document).ready(function() {
 			var course_name = courses[i+1]
 			var parallels = courses[i+2];
 			var parallel_id = courses[i+3];
-			$("#tb_courselist").append("<tr><td><a href='course.html#" + course_code + "_" + parallel_id + "'>" + //generate correct link path
+			/*$("#tb_courselist").append("<tr><td><a href='course.html#" + course_code + "_" + parallel_id + "'>" + //generate correct link path
 										courses[i] + " " + courses[i + 1] + "</a></td>" + //generate actual link on page
-										"<td>" + courses[i+2] + "</td></tr>"); //Display related programmes 
+										"<td>" + courses[i+2] + "</td></tr>"); //Display related programmes */
+			$("#tb_courselist").append("<div><tr><td><a href='course.html#" + course_code + "_" + parallel_id + "'>" + //generate correct link path
+										courses[i] + " " + courses[i + 1] + " </a></td><td class='right'>" + //generate actual link on page
+										courses[i+2] + "</td></tr></div>"); //Display related programmes 
+										//remember "fake" space
 
 		}
 	});

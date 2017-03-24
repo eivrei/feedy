@@ -16,33 +16,39 @@ $(document).ready(function() {
 
 	});	
 });
-/* PSEUDOCODE
-Retrieve anchors
-Give dynamic course name possibly with parallel
-createLectureTable(data)
-
-function CreateLectureTable(data) {
-	
-	while (more lectures) {
-		if (hasname) {
-		create date field
-		create name field
-		add take quiz button
-		}
-		else {
-		create date field
-		add "no quiz available" text
-		}
-	}
-}
 
 function take_quiz(button) {
-	go to take quiz page for correct quiz
+	console.log("in take quiz");
 }
 
 function createTakeQuizButtonString(lecture_id) {
-	construct whole button string (not as separate function?)
-	"take quiz"
-	link-string to redirect to correct page
+
+	var buttonString = "<button id='" + lecture_id + "' class='btn btn-md btn-primary' type='button'" ; //note: no end >
+	buttonString += "value=" + lecture_id + " onclick = take_quiz(this)>Take quiz";
+	buttonString +="</button>";
+	console.log(buttonString);
+	return buttonString;
 }
-*/
+
+function createLectureTable(data) { 
+
+	var lectureContent = data.split("|"); //remember to check if pop is needed
+	lectureContent.pop();
+	var toAppend = "<div><span>"; //make divs possibly with id for each
+	
+	for (var i = 0; i < lectureContent.length; i+=3) { //possibly -1 on length comparison
+		var lecture_id = lectureContent[i];
+		var date = lectureContent[i+1];
+		var name = lectureContent[i+2];
+		console.log("name =" ,name);
+		toAppend+= "<a href='statistics.html#" + lecture_id +"'>" + date + "</a>"; //link course name to statistics page
+		if (name != "NULL") { 
+			toAppend += " <i>" + name + "</i></span>";  
+			toAppend += " " + createTakeQuizButtonString(lecture_id); //create view button value = lecture_id
+		}
+		toAppend+="</div>";
+	}
+		//toAppend += "</br>";
+		console.log(toAppend);
+		$("#course_content").append(toAppend);
+}

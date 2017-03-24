@@ -2,6 +2,16 @@ var lecture_id = window.location.hash.substr(1);
 
 $(document).ready(function() {
 	//new $.get for quiz name? Probably just adds confusion if sent from getPreview
+	$.get("../../php/lecturer_getStatsHeadinfo.php?lecture=" + lecture_id, function (data){
+		console.log(data);
+		var dateAndTime = data.split("|");
+		var date = dateAndTime[0];		
+		var name = dateAndTime[1];
+		var toReplace = ""; //probably unneeded step
+		toReplace += date + " <i>" + name + "</i>";
+		$("#quiz_name").html(toReplace);
+	});
+
 	$.get("../../php/lecturer_getPreview.php?lecture=" + lecture_id, function (data) {
 		console.log(data);
 		

@@ -5,6 +5,7 @@
 	$db_password = "YEa2VJXHxmWQ";
 	$db_name = "magnukun_pudb";
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+	$conn->set_charset("utf8");
 	$id = $_GET["id"]; 
 	if($conn->connect_error){
 		die("Connection failed: " . $conn->connect_error);

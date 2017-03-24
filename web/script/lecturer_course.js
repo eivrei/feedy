@@ -54,7 +54,8 @@ function upload_pptx(button) { //uses form action for upload.php
 function createLectureTable(data) { 
 
 	var lectureContent = data.split("|"); //remember to check if pop is needed
-	var toAppend = "<span>"; //make divs possibly with id for each
+	lectureContent.pop();
+	var toAppend = "<div><span>"; //make divs possibly with id for each
 	
 	for (var i = 0; i < lectureContent.length; i+=3) { //possibly -1 on length comparison
 		var lecture_id = lectureContent[i];
@@ -71,8 +72,9 @@ function createLectureTable(data) {
 			toAppend+= " " + createButtonString("upload", lecture_id, date); //only make var date if this case applies?
 			//create upload button value = lecture_id + lecture.date (?)
 		}
+		toAppend+="</div>";
 	}
-		//toAppend += "</div>";
+		//toAppend += "</br>";
 		console.log(toAppend);
 		$("#course_content").append(toAppend);
 }

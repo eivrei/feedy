@@ -34,7 +34,7 @@ if($conn->connect_error){
 			}
 			else
 			{
-				echo $row["lecture_id"]."|".$row["lectureDate"]."|".$row["lectureName"];
+				echo $row["lecture_id"]."|".$row["lectureDate"]."|".$row["lectureName"]."|";
 			}
 		}
 	}
