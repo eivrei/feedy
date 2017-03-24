@@ -17,8 +17,8 @@ $(document).ready(function() {
 	});	
 });
 
-function createButtonString(type, lecture_id, date = "null") { //give date as argument only for type = upload, remember to check if id is needed
-	var buttonString = "<button id='" + lecture_id + "' class='btn btn-lg btn-primary btn-block' type='button'" ; //note: no end >
+function createButtonString(type, lecture_id, date = "null") { //give date as argument only for type = upload (sysarg), remember to check if id is needed
+	var buttonString = "<button id='" + lecture_id + "' class='btn btn-md btn-primary' type='button'" ; //note: no end >
 	switch(type) {
 		case "view":
 			buttonString += "value=" + lecture_id + " onclick = view_quiz(this)>View quiz";
@@ -34,11 +34,13 @@ function createButtonString(type, lecture_id, date = "null") { //give date as ar
 			console.log("something went wrong");
 	}
 	buttonString +="</button>";
+	console.log(buttonString);
 	return buttonString;
 }
 
 function view_quiz(button) { 
-	console.log("in view");
+	var redirectString = "quiz_preview.html#" + button.value;
+	window.location = redirectString;
 }
 
 function delete_quiz(button) {
@@ -52,7 +54,7 @@ function upload_pptx(button) { //uses form action for upload.php
 function createLectureTable(data) { 
 
 	var lectureContent = data.split("|"); //remember to check if pop is needed
-	var toAppend = "<div>"; //make divs possibly with id for each
+	var toAppend = "<span>"; //make divs possibly with id for each
 	
 	for (var i = 0; i < lectureContent.length; i+=3) { //possibly -1 on length comparison
 		var lecture_id = lectureContent[i];
@@ -61,7 +63,7 @@ function createLectureTable(data) {
 		console.log("name =" ,name);
 		toAppend+= "<a href='statistics.html#" + lecture_id +"'>" + date + "</a>"; //link course name to statistics page
 		if (name != "NULL") { 
-			toAppend += " " + name;  
+			toAppend += " <i>" + name + "</i></span>";  
 			toAppend += " " + createButtonString("view",lecture_id); //create view button value = lecture_id
 			toAppend += " " + createButtonString("delete",lecture_id); //create delete button value = lecture_id
 		}
@@ -70,7 +72,8 @@ function createLectureTable(data) {
 			//create upload button value = lecture_id + lecture.date (?)
 		}
 	}
-		toAppend += "</div>";
+		//toAppend += "</div>";
+		console.log(toAppend);
 		$("#course_content").append(toAppend);
 }
 

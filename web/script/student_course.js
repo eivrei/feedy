@@ -1,8 +1,3 @@
-
-
-
- 
-
 var hash = window.location.hash.substr(1);
 hash = hash.split("_");
 var course_code =  hash[0];
