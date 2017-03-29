@@ -43,12 +43,12 @@ if ($uploadOk == 0) {
 	//echo !in_array('exec', $disabled);
 
 
-		$relpath = "../../server/exec_return_test.py";  
+		//$relpath = "../../server/exec_return_test.py";  
 		//$relpath = "/alexanws/PU100/server/exec_return_test.py ";
-		$abspath = realpath($relpath);
-		echo $abspath;
-		echo $relpath;*/
-		echo exec(exec_return_test.py); 
+		//$abspath = realpath($relpath);
+		//echo $abspath;
+		//echo $relpath;*/
+		//echo exec(exec_return_test.py); 
 		//echo $test_output;
 		//echo exec("whoami");  -- works and returns "alexanws"
 		
