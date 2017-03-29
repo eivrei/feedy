@@ -48,4 +48,4 @@ fabric.properties
 
 ## Self-defined
 .DS_Store
-__pycache__/*
+*/__pycache__/*
