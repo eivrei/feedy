@@ -1,4 +1,4 @@
-from server.db_connector import DbConnector
+from db_connector import DbConnector
 
 
 class QuizSender(DbConnector):
@@ -7,7 +7,7 @@ class QuizSender(DbConnector):
         self.quiz_data = quiz_data
         self.topic_id = []
 
-    def send_quiz(self):
+    def run(self):
         try:
             self.send_topics()
             self.send_keywords()
