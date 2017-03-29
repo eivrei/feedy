@@ -2,7 +2,7 @@ import sys
 import json
 import urllib.request
 from datetime import datetime
-from server.db_connector import DbConnector
+from db_connector import DbConnector
 
 
 # The webscraper uses NTNU's sites to extract lecture information for a specific course code
@@ -117,5 +117,5 @@ class Lecture:
                ". That results in this datetime " + str(self.datetime)
 
 if __name__ == '__main__':
-    webScraper = WebScraper(sys.argv[1])
-    webScraper.run()
+    web_scraper = WebScraper(sys.argv[1])
+    web_scraper.run()

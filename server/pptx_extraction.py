@@ -32,4 +32,3 @@ def extract(filepath):
                 last_level = paragraph.level
         all_data.insert(len(all_data) - number_of_sub_questions, slide_data)
     return all_data
-# print(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_1.pptx"))
