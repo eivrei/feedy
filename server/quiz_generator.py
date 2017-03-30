@@ -4,7 +4,7 @@ from collections import OrderedDict
 import wikipedia
 import string
 
-from wikipedia_topic_handlers import WikipediaKeywordExtractor
+from server.wikipedia_topic_handlers import WikipediaKeywordExtractor
 
 
 # Class for generation of quiz from raw data
