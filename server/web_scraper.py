@@ -6,6 +6,7 @@ from server.db_connector import DbConnector
 
 
 # The webscraper uses NTNU's sites to extract lecture information for a specific course code
+# and updates our database with information on course, lecture and parallel.
 class WebScraper(DbConnector):
     def __init__(self, course_code):
         self.year = str(datetime.now().year)  # Find current year
@@ -16,7 +17,7 @@ class WebScraper(DbConnector):
                    "cacheLevelPage&p_p_col_id=column-1&p_p_col_count=1&_coursedetailsportlet_WAR_courselistportlet_" \
                    "courseCode=" + self.course_code + "&_coursedetailsportlet_WAR_courselistportlet_year=" + self.year \
                    + "&year=" + self.year + "&version=1"
-        self.raw_data = {}  # Data collected from NTNU's websites
+        self.raw_data = {}  # Data collected from NTNU's websites in JSON format
         self.lectures = []  # All lectures found by the scraper
         self.lectures_by_parallel = {}  # Sorting all lectures by parallel: {parallel:[lecture, lecture], ...}
 
@@ -35,11 +36,10 @@ class WebScraper(DbConnector):
         finally:
             self.close()
 
-
     # Find all lectures for this course
     def find_lectures(self):
         for event in self.raw_data:
-            # Set course name
+            # Set course name if not set
             if self.course_name == "":
                 self.course_name = event['courseName']
 
@@ -55,6 +55,7 @@ class WebScraper(DbConnector):
                     else:
                         self.lectures_by_parallel[programmes] = [lecture]
 
+    # Make course, lectures and parallels in the database
     def update_db(self):
         make_course = "INSERT INTO Course VALUES(%s, %s)"
         make_parallel = "INSERT INTO Parallel(programmes, course_code) VALUES(%s, %s)"
@@ -69,6 +70,7 @@ class WebScraper(DbConnector):
                 lecture_id = self.cursor.lastrowid
                 self.cursor.execute(set_lecture_parallel, (lecture_id, parallel_id))
 
+    # Get raw data from NTNU's websites
     def get_raw_data(self):
         # NTNU's website is giving different responses. Run scraper several times to assure we are getting all data
         for i in range(10):
@@ -77,6 +79,7 @@ class WebScraper(DbConnector):
             if len(raw_data) > len(self.raw_data):
                 self.raw_data = raw_data
 
+    # Returns a list of all weeks from an input which may look like this: [3-14, 17]
     @staticmethod
     def get_all_weeks(weeks_list):
         weeks = []
@@ -89,6 +92,7 @@ class WebScraper(DbConnector):
                 weeks.append(int(element[0]))
         return weeks
 
+    # Merge all programmes into one string
     @staticmethod
     def programmes_to_string(programmes):
         return ", ".join(program for program in programmes)
@@ -108,6 +112,7 @@ class Lecture:
         self.programmes = programmes
         self.datetime = self.generate_datetime()
 
+    # Convert year, week, day and from_time to a datetime object with 'YYYY-MM-DD HH:MM' as format
     def generate_datetime(self):
         return datetime.strptime(self.year + "-W" + self.week + "-" + self.day + " " + self.from_time,  "%Y-W%W-%w %H:%M")
 

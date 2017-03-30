@@ -3,6 +3,7 @@ from server.quiz_generator import *
 from server.quiz_sender import QuizSender
 
 
+# Main program to generate quiz and store it in our database
 def main(filename, lecture_id):
     # Generate raw data from pptx file
     raw_data = extract("/groupswww/pugruppe100/server/temp/" + filename + ".pptx")
