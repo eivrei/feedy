@@ -8,15 +8,8 @@ class QuizSender(DbConnector):
         self.topic_id = []
 
     def run(self):
-        try:
-            self.send_topics()
-            self.send_keywords()
-            self.commit()
-        except Exception as error:
-            print("Error: ", error)
-            self.error()
-        finally:
-            self.close()
+        self.send_topics()
+        self.send_keywords()
 
     def send_topics(self):
         add_topic = "INSERT INTO QuizTopic VALUES (NULL, %s, %s)"

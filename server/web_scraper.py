@@ -73,7 +73,6 @@ class WebScraper(DbConnector):
         # NTNU's website is giving different responses. Run scraper several times to assure we are getting all data
         for i in range(10):
             raw_data = json.loads(urllib.request.urlopen(self.url).read())['course']['summarized']
-            print(len(raw_data))
             if len(raw_data) > len(self.raw_data):
                 self.raw_data = raw_data
 
