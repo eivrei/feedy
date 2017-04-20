@@ -12,7 +12,7 @@ class QuizSender(DbConnector):
         self.send_keywords()
 
     def send_topics(self):
-        add_topic = "INSERT INTO QuizTopic VALUES (NULL, %s, %s)"
+        add_topic = "INSERT INTO QuizTopic(topic_id, topic, lecture_id) VALUES (NULL, %s, %s)"
         for topic in self.quiz_data:
             self.cursor.execute(add_topic, (topic.pop(0), self.lecture_id))
             self.topic_id.append(self.cursor.lastrowid)
