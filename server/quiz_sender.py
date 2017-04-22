@@ -1,6 +1,7 @@
 from db_connector import DbConnector
 
 
+# Class to send generated quiz to database
 class QuizSender(DbConnector):
     def __init__(self, lecture_id, quiz_data):
         self.lecture_id = lecture_id
