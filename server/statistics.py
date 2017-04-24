@@ -1,4 +1,5 @@
-from server.db_connector import DbConnector
+import sys
+from db_connector import DbConnector
 from numpy import std
 
 '''
@@ -8,7 +9,7 @@ For each topic we must generate:
     - standard deviation
     - keywords with a total answer percent on less than 20% (numAnswered/answers_per_topic < 0.2)
 
-Statistics are saved in db as "[topic1, answers_per_topic, avgPercent, standard deviation, keyword1, keyword2][topic2....]"
+Statistics are saved in db as "[topic1, answers_per_topic, avgPercent, standard deviation, keyword1, keyword2][...]"
 '''
 
 
@@ -105,11 +106,13 @@ class Statistics(DbConnector):
     def send_statistics(self):
         statistics = ""
         for i in range(len(self.all_topics)):
-            statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + str(self.avgPercents[i]) + "," + \
-                          str(self.standard_deviations[i]) + ("," if self.low_scoring_keywords[i] else "") + ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
+            statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + \
+                          str(self.avgPercents[i]) + "," + str(self.gap[i]) + \
+                          ("," if self.low_scoring_keywords[i] else "") + \
+                          ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
         query = "UPDATE Lecture SET lectureStats = %s WHERE lecture_id = %s"
         self.cursor.execute(query, (statistics, self.lecture_id))
 
-# if __name__ == '__main__':
-#     statistics = Statistics(2)
-#     statistics.run()
+if __name__ == '__main__':
+    statistics = Statistics(sys.argv[1])
+    statistics.run()
