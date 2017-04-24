@@ -22,7 +22,7 @@ class StatisticsGenerator(DBConnector):
         self.answers_per_topic = []
         self.avgPercents = []
         self.low_scoring_keywords = []
-        self.gap = []
+        self.standard_deviations = []
         self.answers_per_alternative = []
 
     def run(self):
@@ -33,7 +33,7 @@ class StatisticsGenerator(DBConnector):
                 print("There are no answers to this lecture")
             else:
                 self.get_avg_percents()
-                self.get_gap()
+                self.get_standard_deviation()
                 self.get_answers_per_topic()
                 self.get_low_scoring_keywords()
                 self.get_answers_per_alternative()
@@ -52,14 +52,14 @@ class StatisticsGenerator(DBConnector):
                               "WHERE qt.lecture_id=%s ORDER BY qt.topic_id ASC, qa.answer_id ASC" % self.lecture_id
                 self.cursor.execute(get_answers)
 
-                last_topic = ""
+                last_topic_text = ""
                 topic_answers = []
                 for correct_percent, topic_text in self.cursor:
-                    if topic_text != last_topic:
-                        if last_topic != "":
+                    if topic_text != last_topic_text:
+                        if last_topic_text != "":
                             self.all_answers.append(topic_answers)
                             topic_answers = []
-                        last_topic = topic_text
+                        last_topic_text = topic_text
                         self.all_topics.append(topic_text)
                     topic_answers.append(correct_percent)
                 self.all_answers.append(topic_answers)
@@ -71,9 +71,9 @@ class StatisticsGenerator(DBConnector):
                 avg += answer
             self.avgPercents.append(round(avg/len(topic), 1))
 
-    def get_gap(self):
+    def get_standard_deviation(self):
         for topic in range(len(self.all_topics)):
-            self.gap.append(round(std(self.all_answers[topic]), 1))
+            self.standard_deviations.append(round(std(self.all_answers[topic]), 1))
 
     def get_answers_per_topic(self):
         query = "SELECT qa.topic_id, COUNT(*) FROM QuizAnswer AS qa NATURAL JOIN QuizTopic AS qt " \
@@ -108,11 +108,12 @@ class StatisticsGenerator(DBConnector):
         for alternative1, alternative2, alternative3, alternative4 in self.cursor:
             self.answers_per_alternative.append([alternative1, alternative2, alternative3, alternative4])
 
+    # Send statistics to database
     def send_statistics(self):
         statistics = ""
         for i in range(len(self.all_topics)):
             statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + \
-                          str(self.avgPercents[i]) + "," + str(self.gap[i]) + \
+                          str(self.avgPercents[i]) + "," + str(self.standard_deviations[i]) + \
                           ",".join(alternative for alternative in self.answers_per_alternative[i]) + \
                           ("," if self.low_scoring_keywords[i] else "") + \
                           ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
