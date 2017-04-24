@@ -2,12 +2,12 @@ import sys
 import json
 import urllib.request
 from datetime import datetime
-from db_connector import DbConnector
+from db_connector import DBConnector
 
 
 # The webscraper uses NTNU's sites to extract lecture information for a specific course code
 # and updates our database with information on course, lecture and parallel.
-class WebScraper(DbConnector):
+class CourseGenerator(DBConnector):
     def __init__(self, course_code):
         self.year = str(datetime.now().year)  # Find current year
         self.course_code = course_code.upper()
@@ -121,5 +121,5 @@ class Lecture:
                ". That results in this datetime " + str(self.datetime)
 
 if __name__ == '__main__':
-    web_scraper = WebScraper(sys.argv[1])
+    web_scraper = CourseGenerator(sys.argv[1])
     web_scraper.run()

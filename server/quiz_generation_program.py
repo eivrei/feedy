@@ -3,10 +3,10 @@ import os
 from pptx_extraction import extract
 from quiz_generator import *
 from quiz_sender import QuizSender
-from db_connector import DbConnector
+from db_connector import DBConnector
 
 
-class QuizGenerationProgram(DbConnector):
+class QuizGenerationProgram(DBConnector):
     def __init__(self, filename, lecture_id):
         self.filename = filename  # filename on format word_word_word
         self.lecture_id = lecture_id
