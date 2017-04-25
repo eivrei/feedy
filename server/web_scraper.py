@@ -98,7 +98,7 @@ class CourseGenerator(DBConnector):
 
     def print_lectures(self):
         for lecture in self.lectures:
-            print(lecture.to_string())
+            print(str(lecture))
 
 
 class Lecture:
@@ -115,7 +115,7 @@ class Lecture:
     def generate_datetime(self):
         return datetime.strptime(self.year + "-W" + self.week + "-" + self.day + " " + self.from_time,  "%Y-W%W-%w %H:%M")
 
-    def to_string(self):
+    def __str__(self):
         return "This lecture is on day " + str(self.day) + " from " + self.from_time + " to " + self.to_time + \
                " the week " + str(self.week) + " for these programmes: " + self.programmes + \
                ". That results in this datetime " + str(self.datetime)

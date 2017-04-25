@@ -10,7 +10,7 @@ For each topic we must generate:
     - number of answers per alternative on lowest scoring topic
     - keywords with a total answer percent on less than 20% (numAnswered/answers_per_topic < 0.2)
 
-Statistics are saved in db as "[topic1, answers_per_topic, avgPercent, standard deviation, alt1, alt2, alt3, alt4, keyword1, keyword2][...]"
+Statistics are saved in db as "[topic1, answers_per_topic, avg_percent, standard deviation, alt1, alt2, alt3, alt4, keyword1, keyword2][...]"
 '''
 
 
@@ -20,7 +20,7 @@ class StatisticsGenerator(DBConnector):
         self.all_topics = []
         self.all_answers = []
         self.answers_per_topic = []
-        self.avgPercents = []
+        self.avg_percents = []
         self.low_scoring_keywords = []
         self.standard_deviations = []
         self.answers_per_alternative = []
@@ -69,7 +69,7 @@ class StatisticsGenerator(DBConnector):
             avg = 0
             for answer in topic:
                 avg += answer
-            self.avgPercents.append(round(avg/len(topic), 1))
+            self.avg_percents.append(round(avg / len(topic), 1))
 
     def get_standard_deviation(self):
         for topic in range(len(self.all_topics)):
@@ -113,7 +113,7 @@ class StatisticsGenerator(DBConnector):
         statistics = ""
         for i in range(len(self.all_topics)):
             statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + \
-                          str(self.avgPercents[i]) + "," + str(self.standard_deviations[i]) + \
+                          str(self.avg_percents[i]) + "," + str(self.standard_deviations[i]) + \
                           ",".join(alternative for alternative in self.answers_per_alternative[i]) + \
                           ("," if self.low_scoring_keywords[i] else "") + \
                           ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"

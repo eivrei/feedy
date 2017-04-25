@@ -31,7 +31,7 @@ class WikipediaKeywordExtractor:
                 found_noun = True
             elif found_noun:
                 # Return the simplified topic if at least one noun has been found, but the current word is not a noun
-                # simple_topic should now contain the first string of consecutive nouns in topic
+                # simple_topic should now contain the first sequence of consecutive nouns in topic
                 return simple_topic
             else:
                 continue
