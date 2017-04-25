@@ -11,7 +11,7 @@ class WikipediaKeywordExtractor:
         self.language = language
         self.simple_topic = self.simplify_topic(topic)
         if self.simple_topic:
-            self.summary = wikipedia.summary(self.simple_topic)  # TODO: Handle edge case -- summary provides ZERO results
+            self.summary = wikipedia.summary(self.simple_topic)
         else:
             # Raise an exception to be handled by QuizGenerator object
             # This exception should never actually be raised unless the topic is empty

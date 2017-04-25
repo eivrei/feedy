@@ -104,10 +104,14 @@ class QuizGenerator:
                         current_quiz_topic_data[kw_index][1] += wiki_kws[keyword]
 
             # If wikipedia search for topic produces no results, simply move on to next topic
+            except wikipedia.exceptions.PageError:
+                continue
             except ValueError:
                 continue
             except wikipedia.exceptions.DisambiguationError:
                 continue
+            except Exception as e:
+                print('Unhandled exception:', e)
 
         # Remove the weakest keywords (weight < 10)
         quiz = [[quiz_data[i] for i in range(len(quiz_data)) if i == 0 or
