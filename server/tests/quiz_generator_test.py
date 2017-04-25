@@ -9,7 +9,7 @@ class QuizGeneratorTest(unittest.TestCase):
         self.rel_path = "/server/temp/test_1.pptx"
 
         quiz_generator = QuizGenerator(self.data_in)
-        quiz_generator.generate()
+        quiz_generator.run()
         self.quiz_data = quiz_generator.quiz
         self.topic_list = [topic_data[0] for topic_data in self.quiz_data]  # Generate list of all topics in quiz
 
