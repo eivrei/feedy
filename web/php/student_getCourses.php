@@ -1,5 +1,4 @@
 <?php
-
 	$servername = "mysql.stud.ntnu.no";
 	$db_username = "magnukun_secure";
 	$db_password = "YEa2VJXHxmWQ";
@@ -16,7 +15,8 @@
 			INNER JOIN Lecture ON LectureLecturer.lecture_id = Lecture.lecture_id 
 			INNER JOIN LectureParallel ON Lecture.lecture_id = LectureParallel.lecture_id 
 			INNER JOIN Parallel ON LectureParallel.parallel_id = Parallel.parallel_id 
-			INNER JOIN Course ON Parallel.course_code = Course.course_code";
+			INNER JOIN Course ON Parallel.course_code = Course.course_code
+			ORDER BY Course.course_code ASC, Parallel.programmes ASC";
 
 	$result = $conn->query($sql);
 	
@@ -30,7 +30,6 @@
 	else {
 		print_r($result);
 	}
-
 
 	$conn->close();
 ?>
