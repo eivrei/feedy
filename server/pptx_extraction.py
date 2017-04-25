@@ -38,6 +38,3 @@ def extract(filepath):
         # This line ensures that a subpoint with its points is behind its parent point in all_data.
         all_data.insert(len(all_data) - number_of_sub_questions, slide_data)
     return all_data
-
-if __name__ == '__main__':
-    print(extract("/Users/eivindreime/git/pugruppe100/server/temp/test_2.pptx"))
