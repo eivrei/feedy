@@ -5,7 +5,8 @@
 	$db_name = "magnukun_pudb";
 	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
 	$conn->set_charset("utf8");
-	$id = $_GET["id"]; 
+	$id = $_GET["id"];
+
 	if($conn->connect_error){
 		die("Connection failed: " . $conn->connect_error);
 	}
@@ -16,7 +17,8 @@
 			INNER JOIN LectureParallel ON Lecture.lecture_id = LectureParallel.lecture_id 
 			INNER JOIN Parallel ON LectureParallel.parallel_id = Parallel.parallel_id 
 			INNER JOIN Course ON Parallel.course_code = Course.course_code 
-			WHERE Lecturer.username='$id'";
+			WHERE Lecturer.username='$id'
+			ORDER BY Course.course_code ASC";
 
 	$result = $conn->query($sql);
 	
