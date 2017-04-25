@@ -28,6 +28,9 @@ class CourseGenerator(DBConnector):
             if self.lectures:
                 self.update_db()
                 self.commit()
+                print("Success")
+            else:
+                print("There is no information about this course")
         except KeyError:
             print("There is no information about this course")
         except Exception as error:
