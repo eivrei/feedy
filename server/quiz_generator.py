@@ -16,8 +16,8 @@ class QuizGenerator:
     # INPUTS:
     # data is a list containing data from each slide of the form [topic1_data, topic2_data, ...]
     # where each "topicX_data"-field is of the form [title, keyword_1, keyword_2, ...]
-    def __init__(self, data, quiz_language='english'):
-        self.data = data
+    def __init__(self, pptx_data, quiz_language='english'):
+        self.pptx_data = pptx_data
         self.quiz_language = quiz_language
         self.quiz = None
 
@@ -29,20 +29,20 @@ class QuizGenerator:
     def clean_data(self):
         cleaned_data = []
 
-        self.data.pop(0)  # Always remove first page, which is assumed to be an intro-page
-        if self.data[0][0] == 'Contents':
-            self.data.pop(0)
+        self.pptx_data.pop(0)  # Always remove first page, which is assumed to be an intro-page
+        if self.pptx_data[0][0] == 'Contents':
+            self.pptx_data.pop(0)
 
         # Remove empty topics
-        self.data = [topic_data for topic_data in self.data if len(topic_data) > 2]
+        self.pptx_data = [topic_data for topic_data in self.pptx_data if len(topic_data) > 2]
 
         merged_data = []
         merged_topics = []
-        for topic_id in range(len(self.data)):
-            topic_data = self.data[topic_id]
+        for topic_id in range(len(self.pptx_data)):
+            topic_data = self.pptx_data[topic_id]
             topic = topic_data[0]
             merged_data.append(topic_data)
-            for other_topic_data in self.data[topic_id+1:]:
+            for other_topic_data in self.pptx_data[topic_id+1:]:
                 other_topic = other_topic_data[0]
                 if other_topic in merged_topics:  # If already merged into "merged_data"
                     continue
@@ -63,7 +63,7 @@ class QuizGenerator:
 
                 cleaned_data[len(cleaned_data)-1].append(datum)
 
-        self.data = cleaned_data
+        self.pptx_data = cleaned_data
 
     # Idea for extension: use PyDictionary to attach more words to the title
 
@@ -76,7 +76,7 @@ class QuizGenerator:
         default_weight = 10
 
         quiz = []
-        for topic_data in self.data:
+        for topic_data in self.pptx_data:
             topic = topic_data[0]
             quiz.append([topic])
 
