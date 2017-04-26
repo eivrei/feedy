@@ -1,9 +1,7 @@
 var lecture_id = window.location.hash.substr(1);
 
 $(document).ready(function() {
-
 	$.get("../../php/lecturer_getStatsHeadinfo.php?lecture=" + lecture_id, function (data){
-		console.log(data);
 		var dateAndTime = data.split("|");
 		var date = dateAndTime[0];		
 		var name = dateAndTime[1];
@@ -32,7 +30,6 @@ function createStatString(statArray) {
 	toAppend="";
 	var dataSets = statArray.split("]");
 	dataSets.pop();
-	console.log(dataSets);
 	var currentSet;
 	var name, numAnswers, percentage, spread;
 	var keywords = [];
@@ -40,11 +37,12 @@ function createStatString(statArray) {
 	//process data into relevant datasets
 	for (var i = 0; i < dataSets.length; i++) { //for each [ ] block in stat array
 		currentSet = dataSets[i].split(",");
-		var name, numAnswers, percentage, spread;
-		var keywords = [];
-
+		name = "";
+		numAnswers = 0;
+		percentage = 0;
+		spread = 0;
+		keywords = [];
 		for (var j = 0; j < currentSet.length; j++) { //for each comma-separeted element in currentSet
-			
 			switch(j) {
 				case 0:
 					name = currentSet[j];
@@ -68,16 +66,38 @@ function createStatString(statArray) {
 	$("#stats_content").append(toAppend);
 }
 
-//for later: Make arguments an array instad
-function createDataSetString(name, numAnswers, percentage, spread, keywords) {
+//for later: Make arguments an array instead?
+function createDataSetString(name, numAnswers, percentage, spread, keywords, alt1, alt2, alt3, alt4) {
 	var dataSetString = "";
 	dataSetString += "<h3>" + name + "</h3>";
 	dataSetString += "<ul>";
-	dataSetString += "<li> Answers: " + numAnswers + "</li>";
-	dataSetString += "<li> Average correctness percentage: " + percentage + "</li>";
-	dataSetString +="<li>Spread: " + spread + "</li>";
-	dataSetString +="<li> Keywords found in < 20% of answers: " + keywords + "</li>";
+	dataSetString += "<li><b>Answers: </b>" + numAnswers + "</li>";
+	dataSetString += "<li><b>Average correctness percentage: </b>" + percentage + "</li>";
+	dataSetString += "<li><b>Spread: </b>" + spread + "</li>";
+	dataSetString +="<li><b>Keywords found in < 20% of answers: </b>";
+	keywords.forEach(function (item, index) {
+		dataSetString += item;
+		if (index !== keywords.length - 1){
+			dataSetString += ", ";
+		}
+	});
+	dataSetString += "</li>";
+	dataSetString += "<li><b>Lower percentage students say: </b>";
+    dataSetString += "<ul>";
+    dataSetString += "<li><b>Pace is too fast: </b>" + alt1 + "</li>";
+    dataSetString += "<li><b>Too few/poor examples: </b>" + alt2 + "</li>";
+    dataSetString += "<li><b>Unfocused presentation: </b>" + alt3 + "</li>";
+    dataSetString += "<li><b>Lacking background info: </b>" + alt4 + "</li>";
+    dataSetString += "</ul>";
 	dataSetString += "</ul>";
 	return dataSetString;
 }
 
+function generateStatistics() {
+    $.get("../../php/lecturer_generateStatistics.php?lecture=" + lecture_id, function (data) {
+        if(data !== "OK"){
+        	alert("Something went wrong. Contact the system administrator.");
+		}
+		location.reload();
+    });
+}

@@ -1,30 +1,19 @@
-var username = getCookie("Username");
 
-$(document).ready(function() {
-	$.get("../../php/lecturer_courses.php?id=" + username, function (data) {
+$(function retrieveElements() {
+	$.get("../../php/lecturer_courses.php?id=" + sessUsername, function (data) {
 		//console.log(data);
 		var courses = data.split("|"); //length will always be multiple of 3 (course code, -name and programmes)
 		courses.pop(); //removes last empty element after split (needed for lecturers with >1 courses in current implementation
-		console.log(courses);
 		for (var i = 0; i < courses.length-1; i+=4) {
-			var course_code = courses[i];
-			var course_name = courses[i+1]
-			var parallels = courses[i+2];
-			var parallel_id = courses[i+3];
-			console.log("<div><tr><td><a href='course.html#" + course_code + "_" + parallel_id + "'>" +
-										courses[i] + " " + courses[i + 1] + " </a></td><td>" +
-										courses[i+2] + "</td></tr></div>");
-			$("#tb_courselist").append("<div><tr><td><a href='course.html#" + course_code + "_" + parallel_id + "'>" + //generate correct link path
-										courses[i] + " " + courses[i + 1] + " </a></td><td class='right'>" + //generate actual link on page
-										courses[i+2] + "</td></tr></div>"); //Display related programmes 
+			var course_code = courses[i].replace(/(\r\n|\n|\r)/gm,"");
+			var course_name = courses[i+1].replace(/(\r\n|\n|\r)/gm,"");
+			var parallels = courses[i+2].replace(/(\r\n|\n|\r)/gm,"");
+			var parallel_id = courses[i+3].replace(/(\r\n|\n|\r)/gm,"");
+			$("#div_courselist").append("<div class='courseElement' onclick=\"javascript:location.href='course.php#" + course_code + "_" + parallel_id + "';\"><p class='courseName'>" + //generate correct link path
+										course_code + " " + course_name + " </p><p class='parallelName'>" + //generate actual link on page
+										parallels + "</p></div>"); //Display related programmes 
 										//remember "fake" space
 			
 		}
-		/*$("#tb_courselist").append("<tr><td><a href='course.html#" + courses[i] + "'>" + //generate correct link path
-										courses[i] + " " + courses[i + 1] + "</a></td>" + //generate actual link on page
-										"<td>" + courses[i+2] + "</td></tr>"); //Display related programmes */
 	});
-
-
-
 });
