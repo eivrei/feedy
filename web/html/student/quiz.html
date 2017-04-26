@@ -48,7 +48,7 @@
 	
 	<h3>Type all keywords related to: <span id="topic-text"></span></h3>
 	<div class="input-group">
-		<textarea id="answer-input" class="form-control custom-control" rows="3" style="resize:none"></textarea>     
+		<textarea id="answer-input" class="form-control custom-control" maxlength="400" rows="3" style="resize:none"></textarea>
 		<span id="send-button" class="input-group-addon btn btn-primary" onclick="topic_answered()">Send</span>
 	</div>
 	<div class="progress">
@@ -57,7 +57,50 @@
 		</div>
 	</div>
 
+
+
+  <div class="bs-example">
+    <!-- Button HTML (to Trigger Modal) -->
+    <a href="#feedback-modal" class="btn btn-lg btn-primary" data-toggle="modal">Launch Demo Modal</a>
+    
+    <!-- Modal HTML -->
+	<!-- see student_quiz.js for details on feedback_modal_onclick(), needs correct hidden value to run -->
+    <div id="feedback-modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id = "modal-title" class="modal-title">You scored less than 20% in one or more topic </h3>
+          </div>
+          <div class="modal-body">
+			<h4> Which of the following apply to the presentation? </h4>
+            <form>
+              <div class="checkbox">
+                <label><input type="checkbox" id="1" value="">Pace is too fast</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" id="2" value="">To few/poor examples</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" id="3" value="">Unfocused presentation</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" id="4" value="">Lacking background info</label>
+              </div>
+			  <div class="checkbox">
+                <label><input type="checkbox" value="">None of the above</label>
+              </div>
+              <input type="hidden" id="modal-hidden-input"></input>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="feedback_modal_onclick()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

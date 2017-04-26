@@ -53,8 +53,12 @@ function take_random(allTopics, numToChoose) {
 //onclick for send button (quiz.html)
 function topic_answered() {
 	//do stuff like check validity and sending answer to db
-	check_correctness();
-	change_topic();
+	if (document.getElementById("answer-input").value.replace(/^\s+|\s+$/g,"") === ""){
+		alert("Missing some text here");
+	}else{
+		check_correctness();
+		change_topic();
+	}
 }
 
 //checks per topic (on clicking "send"
@@ -93,7 +97,7 @@ function change_topic() {
 		}
 	}
 	else {
-		send_final();
+		prepare_modal();
 	}
 }
 
@@ -169,12 +173,36 @@ function set_progress() {
 }
 
 //prep data and send
-function send_final() {
+function send_final(quizResult) {
+	$.ajax({
+       type: "POST",
+       url: "../../php/student_sendQuiz.php",
+       datatype: 'JSON',
+       data: {quizResult: JSON.stringify(quizResult)},
+       success: function(data){
+			console.log("data in send final: ",data);
+		   var alertText = "Your results:\n";
+		   for(var k = 0; k < chosenTopics.length; k++) {
+			   alertText += chosenTopics[k].topicText + ": " + quizResult.topics[k].correctPercent +"%\n";
+		   }
+		   alert(alertText);
+		   history.back();
+        },
+       failure: function(errMsg) {																					
+            console.error("error:",errMsg);
+       }
+    });
+}
+
+function prepare_modal() {
 	var weightMax;
 	var correctPercent;
+	var currentLowest = {percent: 100, id:0} //initial value to test against
+	var lowestScoreFeedbackArray = [0,0,0,0,0]; //initial values: topic_id, alt1, alt2...
 	var quizResult = {
 					topics: [],
-					keywords: []
+					keywords: [],
+					lowestFeedbackArray: []
 					};
 	//probably not the best way to do this
 	for (var i = 0; i < chosenTopics.length; i++) {
@@ -183,27 +211,41 @@ function send_final() {
 			weightMax += parseInt(chosenTopics[i].keywords[j].weight);
 		}
 		correctPercent = Math.round( (chosenTopics[i].answerWeightSum/weightMax)*100);
+		if (correctPercent < currentLowest.percent) {
+			currentLowest.id = chosenTopics[i].id;
+			currentLowest.percent = correctPercent;
+		}
 		quizResult.topics.push({
 			id: chosenTopics[i].id, 
 			correctPercent: correctPercent
 		})
 	}
 	quizResult.keywords = presentKeywordIds; //id's are unique, no need to connect with topics
-	//send data to db
-	$.ajax({
-       type: "POST",
-       url: "../../php/student_sendQuiz.php",
-       datatype: 'JSON',
-       data: {quizResult: JSON.stringify(quizResult)},
-       success: function(data){
-		   var alertText = "Your results:\n";
-		   for(var k = 0; k < chosenTopics.length; k++) {
-			   alertText += chosenTopics[k].topicText + ": " + quizResult.topics[k].correctPercent +"%\n";
-		   }
-		   alert(alertText);
-        },
-       failure: function(errMsg) {																					
-            console.error("error:",errMsg);
-       }
-    });
+	//activate modal
+	if (currentLowest.percent < 20) {
+		//set correct topic to have student report alternatives on
+		lowestScoreFeedbackArray[0] = currentLowest.id;
+		quizResult.lowestFeedbackArray = lowestScoreFeedbackArray;
+		//prepare modal itself
+		 $('#modal-hidden-input').val(JSON.stringify(quizResult));
+		//activate modal
+		$('#feedback-modal').modal({
+			show : true,
+			keyboard : false,
+			backdrop : false
+		});
+	}
+	//skip modal and send data to db
+	else {
+		quizResult.lowestFeedbackArray = lowestScoreFeedbackArray; //uses default values, handles in php
+		send_final(quizResult);
+	}
+}
+//modal is activated in change_topic() through prepare_modal()
+function feedback_modal_onclick() {
+	var quizResult = JSON.parse($('#modal-hidden-input').val());
+	for (var i = 1; i < 5; i++) {
+		quizResult.lowestFeedbackArray[i] = $('#' + i).is(":checked");
+	}
+	send_final(quizResult); //has to have some version of quizResult
 }
