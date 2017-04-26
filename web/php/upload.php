@@ -34,7 +34,7 @@ if ($_FILES["fileToUpload"]["size"] > 18000000) {
 // if everything is ok, try to upload file
 if($uploadOk == 1) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        $message = "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        $message = "The quiz '". $cleanFileName. "' has been generated.";
 		echo exec("../../../python_env/bin/python3 $program_dir '$cleanFileName' $lecture_id"); //temporary check to see if it works
 
 
