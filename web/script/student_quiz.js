@@ -210,5 +210,5 @@ function send_final() {
        failure: function(errMsg) {																					
             console.error("error:",errMsg);
        }
-  
+  	});
 }
