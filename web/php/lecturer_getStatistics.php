@@ -1,22 +1,19 @@
 <?php
+	include_once '../includes/functions.php';
+	include_once '../includes/db_connect.php';
 
-	$db_username = "magnukun_secure";
-	$db_password = "YEa2VJXHxmWQ";
-	$servername = "mysql.stud.ntnu.no";
-	$db_name = "magnukun_pudb";
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
+	sec_session_start();
+	$mysqli->set_charset("utf8");
 	$lecture_id = $_GET["lecture"];
 
-	if($conn->connect_error){
-		die("Connection failed: " . $conn->connect_error);
+	if($mysqli->connect_error){
+		die("Connection failed: " . $mysqli->connect_error);
 	}
 	
 	$sql = "SELECT Lecture.lectureStats FROM Lecture
 			WHERE Lecture.lecture_id = '$lecture_id'";
 
-	$result = $conn->query($sql);
-	
-	session_start();
+	$result = $mysqli->query($sql);
 	
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -28,5 +25,4 @@
 	}
 
 
-	$conn->close();
-?>
+	$mysqli->close();

@@ -1,4 +1,5 @@
-from server.db_connector import DbConnector
+import sys
+from db_connector import DBConnector
 from numpy import std
 
 '''
@@ -6,21 +7,23 @@ For each topic we must generate:
     - number of answers
     - average percent
     - standard deviation
+    - number of answers per alternative on lowest scoring topic
     - keywords with a total answer percent on less than 20% (numAnswered/answers_per_topic < 0.2)
 
-Statistics are saved in db as "[topic1, answers_per_topic, avgPercent, standard deviation, keyword1, keyword2][topic2....]"
+Statistics are saved in db as "[topic1, answers_per_topic, avg_percent, standard deviation, alt1, alt2, alt3, alt4, keyword1, keyword2][...]"
 '''
 
 
-class Statistics(DbConnector):
+class StatisticsGenerator(DBConnector):
     def __init__(self, lecture_id):
         self.lecture_id = lecture_id
         self.all_topics = []
         self.all_answers = []
         self.answers_per_topic = []
-        self.avgPercents = []
+        self.avg_percents = []
         self.low_scoring_keywords = []
-        self.gap = []
+        self.standard_deviations = []
+        self.answers_per_alternative = []
 
     def run(self):
         try:
@@ -30,9 +33,10 @@ class Statistics(DbConnector):
                 print("There are no answers to this lecture")
             else:
                 self.get_avg_percents()
-                self.get_gap()
+                self.get_standard_deviation()
                 self.get_answers_per_topic()
                 self.get_low_scoring_keywords()
+                self.get_answers_per_alternative()
                 self.send_statistics()
                 self.commit()
         except Exception as error:
@@ -48,14 +52,14 @@ class Statistics(DbConnector):
                               "WHERE qt.lecture_id=%s ORDER BY qt.topic_id ASC, qa.answer_id ASC" % self.lecture_id
                 self.cursor.execute(get_answers)
 
-                last_topic = ""
+                last_topic_text = ""
                 topic_answers = []
                 for correct_percent, topic_text in self.cursor:
-                    if topic_text != last_topic:
-                        if last_topic != "":
+                    if topic_text != last_topic_text:
+                        if last_topic_text != "":
                             self.all_answers.append(topic_answers)
                             topic_answers = []
-                        last_topic = topic_text
+                        last_topic_text = topic_text
                         self.all_topics.append(topic_text)
                     topic_answers.append(correct_percent)
                 self.all_answers.append(topic_answers)
@@ -65,11 +69,11 @@ class Statistics(DbConnector):
             avg = 0
             for answer in topic:
                 avg += answer
-            self.avgPercents.append(round(avg/len(topic), 1))
+            self.avg_percents.append(round(avg / len(topic), 1))
 
-    def get_gap(self):
+    def get_standard_deviation(self):
         for topic in range(len(self.all_topics)):
-            self.gap.append(round(std(self.all_answers[topic]), 1))
+            self.standard_deviations.append(round(std(self.all_answers[topic]), 1))
 
     def get_answers_per_topic(self):
         query = "SELECT qa.topic_id, COUNT(*) FROM QuizAnswer AS qa NATURAL JOIN QuizTopic AS qt " \
@@ -87,7 +91,9 @@ class Statistics(DbConnector):
         last_topic = ""
         keywords = []
         for keyword, num_answered, topic in self.cursor:
-            if topic != last_topic and topic in self.all_topics:
+            if topic not in self.all_topics:
+                continue
+            if topic != last_topic:
                 if last_topic != "":
                     self.low_scoring_keywords.append(keywords)
                     keywords = []
@@ -96,14 +102,26 @@ class Statistics(DbConnector):
                 keywords.append(keyword)
         self.low_scoring_keywords.append(keywords)
 
+    def get_answers_per_alternative(self):
+        query = "SELECT alternative1, alternative2, alternative3, alternative4 " \
+                "FROM QuizTopic WHERE lecture_id = %s " % self.lecture_id
+        self.cursor.execute(query)
+
+        for alternative1, alternative2, alternative3, alternative4 in self.cursor:
+            self.answers_per_alternative.append([alternative1, alternative2, alternative3, alternative4])
+
+    # Send statistics to database
     def send_statistics(self):
         statistics = ""
         for i in range(len(self.all_topics)):
-            statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + str(self.avgPercents[i]) + "," + \
-                          str(self.gap[i]) + ("," if self.low_scoring_keywords[i] else "") + ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
+            statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + \
+                          str(self.avg_percents[i]) + "," + str(self.standard_deviations[i]) + "," + \
+                          ",".join(str(alternative) for alternative in self.answers_per_alternative[i]) + \
+                          ("," if self.low_scoring_keywords[i] else "") + \
+                          ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
         query = "UPDATE Lecture SET lectureStats = %s WHERE lecture_id = %s"
         self.cursor.execute(query, (statistics, self.lecture_id))
 
-# if __name__ == '__main__':
-#     statistics = Statistics(2)
-#     statistics.run()
+if __name__ == '__main__':
+    statistics = StatisticsGenerator(sys.argv[1])
+    statistics.run()
