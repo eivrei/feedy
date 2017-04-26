@@ -26,7 +26,7 @@
         $add_to_lectures= "INSERT INTO LectureLecturer 
 						SELECT lecture_id, '$lecturer_id' FROM LectureParallel 
 						WHERE LectureParallel.parallel_id LIKE '".$parallel_id."%'";
-        $conn->query($add_to_lectures);
+        $mysqli->query($add_to_lectures);
         echo("SUCSESS"); //no check on if it actually works
 	}	
 
