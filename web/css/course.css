@@ -1,3 +1,47 @@
-#fileToUpload , #submitFile{
-	display: inline-block;
+.allLectures{
+  max-width: 720px;
 }
+.btn-default{
+  margin: 5px 3px 5px 3px;
+}
+.dateTime{
+  margin: 3px 0 -3px 0;
+}
+.innerLecture{
+  float: left;
+  padding-top: 2px;
+}
+.lectureElement{
+  display: block;
+  margin: 5px 0 5px 0;
+}
+.lectureInfo{
+  display:block;
+  margin: 3px 0 -3px 0;
+  width:100%;
+}
+.lectureName{
+  display: block;
+  font-size: 18px;
+}
+.line{
+  border-bottom: 1px solid;
+  border-color: #6A6A6A;
+  max-width: 1024px;
+  padding-top: 3px;
+  width: 100%;
+}
+.row-fluid{
+  display: inline-block;
+}
+.takeQuiz{
+  margin-top: 5px;
+}
+.text-center{
+  margin-bottom: 10px;
+}
+.uploadButton{
+  float:left;
+  margin-top:5px;
+}
+
