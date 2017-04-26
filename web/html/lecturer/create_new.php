@@ -27,7 +27,7 @@ if (login_check($mysqli)){
     <![endif]-->
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js"></script>
   <script type="text/javascript">
-      var lecturer_id = "<?php echo $_SESSION['username']; ?>";
+      var lecturer_id = "<?php echo $_SESSION['user_id']; ?>";
   </script>
   <script type="text/javascript" src="../../script/lecturer_choose_parallel.js" charset="utf-8"></script>
   </head>

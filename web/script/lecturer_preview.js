@@ -20,7 +20,7 @@ $(document).ready(function() {
 	$.get("../../php/lecturer_getPreview.php?lecture=" + lecture_id, function (data) {
 		if (data !== "NO DATA") {
 			var topics = data.split("|"); 
-			topics.pop(); //removes some undefined bullshit that should be tracked down
+			topics.pop(); //removes last empty element
 			createQuizPreview(topics);
 			//$("#course_name").html(course_code);
 		}
