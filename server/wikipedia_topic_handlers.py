@@ -11,7 +11,7 @@ class WikipediaKeywordExtractor:
         self.language = language
         self.simple_topic = self.simplify_topic(topic)
         if self.simple_topic:
-            self.summary = wikipedia.summary(self.simple_topic)  # TODO: Handle edge case -- summary provides ZERO results
+            self.summary = wikipedia.summary(self.simple_topic)
         else:
             # Raise an exception to be handled by QuizGenerator object
             # This exception should never actually be raised unless the topic is empty
@@ -31,7 +31,7 @@ class WikipediaKeywordExtractor:
                 found_noun = True
             elif found_noun:
                 # Return the simplified topic if at least one noun has been found, but the current word is not a noun
-                # simple_topic should now contain the first string of consecutive nouns in topic
+                # simple_topic should now contain the first sequence of consecutive nouns in topic
                 return simple_topic
             else:
                 continue
