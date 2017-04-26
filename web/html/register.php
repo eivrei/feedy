@@ -20,7 +20,7 @@ include_once '../includes/functions.php';
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-left" href="./index.php">
+                    <a class="navbar-left" href="../">
                     <img src="../img/FEEDY_logo_eee_small.png" id="feedy_logo" alt="Feedy" />
                     </a>
                 </div>
@@ -98,7 +98,7 @@ include_once '../includes/functions.php';
                                         this.form.confirmpwd);" />
  
             </form>
-        <p id="return_text">Return to the <a href="../index.php">login page</a>.</p>
+        <p id="return_text">Return to the <a href="../">login page</a>.</p>
         </div>
 
     <script src="../bootstrap/js/bootstrap.min.js"></script>

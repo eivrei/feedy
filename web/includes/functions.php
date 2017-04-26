@@ -74,7 +74,7 @@ function login($username, $password, $mysqli) {
         }
     } else {
         // Could not create a prepared statement
-        header("Location: ../error.php?err=Database error: cannot prepare besj statement");
+        header("Location: ../error.php?err=Database error: cannot prepare statement");
         exit();
     }
 }
@@ -98,7 +98,7 @@ function checkbrute($user_id, $mysqli) {
         }
     } else {
         // Could not create a prepared statement
-        header("Location: ../error.php?err=Database error: cannot prepare ræv statement");
+        header("Location: ../error.php?err=Database error: cannot prepare statement");
         exit();
     }
 }

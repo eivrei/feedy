@@ -3,8 +3,8 @@
 $lecture_id = $_POST["lecture_id"];
 $course_code = $_POST["course_code"];
 $parallel_id = $_POST["parallel_id"];
-$target_dir = "../../pugruppe100/server/temp/";
-$program_dir = escapeshellarg("../../pugruppe100/server/quiz_generation_program.py");
+$target_dir = "../../server/temp/";
+$program_dir = escapeshellarg("../../server/quiz_generation_program.py");
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
