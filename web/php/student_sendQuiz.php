@@ -34,7 +34,6 @@
         $update_alternatives.=" alternative4 = alternative4 +1";
     }
     $update_alternatives.=" WHERE topic_id = '$id'";
-    echo $update_alternatives;
 
     $mysqli->query($update_num_Answer);
 	$mysqli->query($add_quiz_answers);

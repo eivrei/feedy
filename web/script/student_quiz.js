@@ -180,7 +180,6 @@ function send_final(quizResult) {
         datatype: 'JSON',
         data: {quizResult: JSON.stringify(quizResult)},
         success: function(data){
-            console.log("data in send final: ",data);
             var alertText = "Your results:\n";
             for(var k = 0; k < chosenTopics.length; k++) {
                 alertText += chosenTopics[k].topicText + ": " + quizResult.topics[k].correctPercent +"%\n";
