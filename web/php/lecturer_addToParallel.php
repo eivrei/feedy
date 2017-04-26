@@ -23,17 +23,11 @@
 		echo("You are already a lecturer in this course!");
 	}
 	else {
-		$add_to_lectures= "INSERT INTO LectureLecturer VALUES
-					(
-						(SELECT LectureParallel.lecture_id 
-						FROM LectureParallel
-						WHERE LectureParallel.parallel_id = '$parallel_id'
-						)
-						('$id')
-					)";
-		$mysqli->query($add_to_lectures);
-		echo("SUCCESS"); //no check on if it actually works
+        $add_to_lectures= "INSERT INTO LectureLecturer 
+						SELECT lecture_id, '$lecturer_id' FROM LectureParallel 
+						WHERE LectureParallel.parallel_id LIKE '".$parallel_id."%'";
+        $conn->query($add_to_lectures);
+        echo("SUCSESS"); //no check on if it actually works
 	}	
 
     $mysqli->close();
-    
