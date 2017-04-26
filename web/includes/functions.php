@@ -4,7 +4,7 @@ include_once 'psl-config.php';
 
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name 
-    $secure = TRUE;
+    $secure = SECURE;
     // This stops JavaScript being able to access the session id.
     $httponly = true;
     // Forces sessions to only use cookies.
