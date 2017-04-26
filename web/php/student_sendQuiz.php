@@ -5,9 +5,6 @@
     $db_name = "magnukun_pudb";
     $conn = new mysqli($server_name, $db_username, $db_password, $db_name);
     $quiz_result = json_decode(stripslashes($_POST['quizResult']));
-	//var_dump($quiz_result);
-   // $topic_id = $form_data[0];
-    //$topic = $form_data[1];
 
     if($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
@@ -26,11 +23,22 @@
 	$add_quiz_answers ="INSERT INTO QuizAnswer (correctPercent, topic_id)
 	VALUES ".$value_pair_string.";";
 	
-	//echo $update_num_Answer;
-	//echo $add_quiz_answers;
-	
+	//generate sql to update 
+	$id = $quiz_result->lowestFeedbackArray[0];
+	$update_alternatives = "UPDATE QuizTopic SET";
+	for($i = 1; $i < 4; $i++) {
+		if ($quiz_result->lowestFeedbackArray[$i] == 1) {
+			$update_alternatives.=" alternative$i = alternative$i +1,"; 
+		}
+	}
+	if ($quiz_result->lowestFeedbackArray[4] == 1) {
+			$update_alternatives.=" alternative4 = alternative4 +1"; 
+	}
+	$update_alternatives.=" WHERE topic_id = '$id'";
+	echo $update_alternatives;
     $conn->query($update_num_Answer);
 	$conn->query($add_quiz_answers);	
+	$conn->query($update_alternatives);
 
     $conn->close();
 ?>
