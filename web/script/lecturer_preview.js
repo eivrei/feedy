@@ -80,10 +80,10 @@ function createQuizPreview(topics){
 	var number_of_topics = 0;
 
 	for (var i = 0; i < topics.length;i+=5) { //five returned rows per result from php
-		topic = topics[i];
-		keyword = topics[i+1];
-		weight = topics[i+2];
-		keyword_id = topics[i+3];
+		topic = topics[i].replace(/(\r\n|\n|\r)/gm,"");
+		keyword = topics[i+1].replace(/(\r\n|\n|\r)/gm,"");
+		weight = topics[i+2].replace(/(\r\n|\n|\r)/gm,"");
+		keyword_id = topics[i+3].replace(/(\r\n|\n|\r)/gm,"");
 
 		if (topic !== currentTopic) {
 			number_of_topics ++;
