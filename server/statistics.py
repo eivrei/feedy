@@ -91,7 +91,9 @@ class StatisticsGenerator(DBConnector):
         last_topic = ""
         keywords = []
         for keyword, num_answered, topic in self.cursor:
-            if topic != last_topic and topic in self.all_topics:
+            if topic not in self.all_topics:
+                continue
+            if topic != last_topic:
                 if last_topic != "":
                     self.low_scoring_keywords.append(keywords)
                     keywords = []
@@ -102,7 +104,7 @@ class StatisticsGenerator(DBConnector):
 
     def get_answers_per_alternative(self):
         query = "SELECT alternative1, alternative2, alternative3, alternative4 " \
-                "FROM QuizTopic"
+                "FROM QuizTopic WHERE lecture_id = %s " % self.lecture_id
         self.cursor.execute(query)
 
         for alternative1, alternative2, alternative3, alternative4 in self.cursor:
@@ -113,8 +115,8 @@ class StatisticsGenerator(DBConnector):
         statistics = ""
         for i in range(len(self.all_topics)):
             statistics += "[" + self.all_topics[i] + "," + str(self.answers_per_topic[i]) + "," + \
-                          str(self.avg_percents[i]) + "," + str(self.standard_deviations[i]) + \
-                          ",".join(alternative for alternative in self.answers_per_alternative[i]) + \
+                          str(self.avg_percents[i]) + "," + str(self.standard_deviations[i]) + "," + \
+                          ",".join(str(alternative) for alternative in self.answers_per_alternative[i]) + \
                           ("," if self.low_scoring_keywords[i] else "") + \
                           ",".join(keyword for keyword in self.low_scoring_keywords[i]) + "]"
         query = "UPDATE Lecture SET lectureStats = %s WHERE lecture_id = %s"
