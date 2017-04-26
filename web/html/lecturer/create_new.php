@@ -37,7 +37,7 @@ if (login_check($mysqli)){
     <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-left" href="../index.php">
+          <a class="navbar-left" href="../../">
             <img src="../../img/FEEDY_logo_eee_small.png" id="feedy_logo" alt="Feedy" />
           </a>
         </div>
@@ -67,16 +67,16 @@ if (login_check($mysqli)){
                                           <?php echo $_SESSION['email'];?>
                                         </p>
                                         <p class="text-left">
-                                            <a href="includes/logout.php" class="btn btn-primary btn-block btn-sm">Log out</a>
+                                            <a href="../../includes/logout.php" class="btn btn-primary btn-block btn-sm">Log out</a>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </li>
                         <li class="divider top-divider"></li>
-                          <li><a href="https://org.ntnu.no/pugruppe100/sjid/matboks/web/html/lecturer/courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
+                          <li><a href="courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
                         <li class="divider"></li>
-                          <li><a href="https://org.ntnu.no/pugruppe100/sjid/matboks/web">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
+                          <li><a href="../../">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
                   </ul>
                   </li>
                 </ul>
@@ -111,7 +111,7 @@ if (login_check($mysqli)){
   <!-- Filled out in JS -->
   <?php else : ?>
     <p>
-        <span class="error">You are not authorized to access this page.</span> Please <a href="../../index.php">login</a>.
+        <span class="error">You are not authorized to access this page.</span> Please <a href="../../">login</a>.
     </p>
   <?php endif; ?>
   <script src="../../bootstrap/js/bootstrap.min.js"></script>
