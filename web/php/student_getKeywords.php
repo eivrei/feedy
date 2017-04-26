@@ -10,7 +10,7 @@
 	if($mysqli->connect_error){
 		die("Connection failed: " . $mysqli->connect_error);
 	}
-	//Distinct not needed?
+	
 	$sql = "SELECT DISTINCT QuizTopic.topic_id, QuizKeyword.keyword_id, QuizKeyword.keyword, QuizKeyword.keywordWeight FROM QuizTopic 
 			INNER JOIN QuizKeyword ON QuizTopic.topic_id = QuizKeyword.topic_id
 			WHERE QuizTopic.topic_id IN ( $idImplode )";

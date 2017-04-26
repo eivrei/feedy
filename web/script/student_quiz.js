@@ -8,7 +8,7 @@ var presentKeywordIds = [];
 
 $(document).ready(function() {
 	$.get("../../php/student_getQuiz.php?id=" + lecture_id, function (data) {
-		if (data != "NO DATA") {
+		if (data !== "NO DATA") {
 			var allTopics = make_allTopics(data);
 			chosenTopics = take_random(allTopics,4); //last number is how many random questions each student answers
 			get_bind_keywords(get_bind_callback); //chosenTopics is currently global, if not an argument is needed (and function update)
@@ -17,7 +17,7 @@ $(document).ready(function() {
 			set_progress();
 		}
 		else {
-		console.log("NO DATA");
+			console.log("NO DATA");
 		}
 	});
 });
@@ -33,7 +33,7 @@ function take_random(allTopics, numToChoose) {
 		randomNum = getRandomInt(0, allTopics.length);
 		//appearantly faster than indexOf
 		for (var j = 0; j < pickedNumbers.length; j++) {
-			if (randomNum == pickedNumbers[j]) {
+			if (randomNum === pickedNumbers[j]) {
 				wasFound = true;
 			}
 		}
@@ -44,8 +44,8 @@ function take_random(allTopics, numToChoose) {
 		wasFound = false;
 	}
 	var chosenTopics = [];
-	for (var j = 0; j < numToChoose; j++) {
-		chosenTopics.push(allTopics[pickedNumbers[j]]);
+	for (var k = 0; k < numToChoose; k++) {
+		chosenTopics.push(allTopics[pickedNumbers[k]]);
 	}
 	return chosenTopics;
 }
@@ -74,7 +74,7 @@ function check_correctness() {
 			keywords.push(chosenTopics[numAnswered].keywords[j].keyword);
 		}
 		toCheck = $.inArray(answerSplit[i], keywords);
-		if (toCheck != -1) {
+		if (toCheck !== -1) {
 			weightTotal += parseInt(chosenTopics[numAnswered].keywords[toCheck].weight);
 			presentKeywordIds.push(chosenTopics[numAnswered].keywords[toCheck].id);
 		}
@@ -84,7 +84,7 @@ function check_correctness() {
 
 //needs to handle what to do when all topics are answered
 function change_topic() {
-	if (numAnswered < chosenTopics.length -1) {
+	if (numAnswered < chosenTopics.length - 1) {
 		//update progress bar
 		numAnswered++; //global
 		set_progress();
@@ -92,12 +92,12 @@ function change_topic() {
 		document.getElementById("answer-input").value="";
 		//change topic in header
 		document.getElementById("topic-text").innerHTML = chosenTopics[numAnswered].topicText;
-		if (numAnswered == chosenTopics.length -1){
+		if (numAnswered === chosenTopics.length - 1){
 			document.getElementById("send-button").innerHTML = "Finish";
 		}
 	}
 	else {
-		send_final();
+		prepare_modal();
 	}
 }
 
@@ -141,74 +141,112 @@ function get_bind_keywords(callback) {
 		   callback(data, idArray);
         },
        failure: function(errMsg) {																					
-            console.error("error:",errMsg);
+            console.error("error:", errMsg);
        }
     });
 	return chosenTopics;
 }
 //necessary for async ajax
-function get_bind_callback(data,idArray) {
+function get_bind_callback(data, idArray) {
     var crntId;
 	for (var i = 0; i < chosenTopics.length; i++) {
 		crntId = idArray[i];
 		for (var j = 0; j < data.length; j+=4) {
-			if (crntId == data[j]) {
-			chosenTopics[i].keywords.push({
-			keyword: data[j+1],
-			id: data[j+2],
-			weight: data[j+3],
-			answered: true
-			});
-		}
-	   }
+			if (crntId === data[j]) {
+				chosenTopics[i].keywords.push({
+					keyword: data[j+1],
+					id: data[j+2],
+					weight: data[j+3],
+					answered: true
+				});
+			}
+	   	}
 	}
 }
 
 function set_progress() {
-	var percentageDone = Math.floor(((numAnswered+1)/chosenTopics.length) * 100);
+	var percentageDone = Math.floor(((numAnswered + 1)/chosenTopics.length) * 100);
 	var styleString = "width:" + percentageDone.toString() + "%";
 	document.getElementById("quiz-progress").setAttribute("aria-valuenow", percentageDone);
 	document.getElementById("quiz-progress").setAttribute("style", styleString);
-	document.getElementById("progress-text").innerHTML = (numAnswered+1) + "/" + chosenTopics.length ;
+	document.getElementById("progress-text").innerHTML = (numAnswered + 1) + "/" + chosenTopics.length ;
 }
 
 //prep data and send
-function send_final() {
-	var weightMax;
-	var correctPercent;
-	var quizResult = {
-					topics: [],
-					keywords: []
-					};
-	//probably not the best way to do this
-	for (var i = 0; i < chosenTopics.length; i++) {
-		weightMax = 0;
-		for (var j = 0; j < chosenTopics[i].keywords.length;j++) {
-			weightMax += parseInt(chosenTopics[i].keywords[j].weight);
-		}
-		correctPercent = Math.round( (chosenTopics[i].answerWeightSum/weightMax)*100);
-		quizResult.topics.push({
-			id: chosenTopics[i].id, 
-			correctPercent: correctPercent
-		});
-	}
-	quizResult.keywords = presentKeywordIds; //id's are unique, no need to connect with topics
-	//send data to db
-	$.ajax({
-       type: "POST",
-       url: "../../php/student_sendQuiz.php",
-       datatype: 'JSON',
-       data: {quizResult: JSON.stringify(quizResult)},
-       success: function(data){
-		   var alertText = "Your results:\n";
-		   for(var k = 0; k < chosenTopics.length; k++) {
-			   alertText += chosenTopics[k].topicText + ": " + quizResult.topics[k].correctPercent +"%\n";
-		   }
-		   alert(alertText);
-		   history.back();
+function send_final(quizResult) {
+    $.ajax({
+        type: "POST",
+        url: "../../php/student_sendQuiz.php",
+        datatype: 'JSON',
+        data: {quizResult: JSON.stringify(quizResult)},
+        success: function(data){
+            console.log("data in send final: ",data);
+            var alertText = "Your results:\n";
+            for(var k = 0; k < chosenTopics.length; k++) {
+                alertText += chosenTopics[k].topicText + ": " + quizResult.topics[k].correctPercent +"%\n";
+            }
+            alert(alertText);
+            history.back();
         },
-       failure: function(errMsg) {																					
+        failure: function(errMsg) {
             console.error("error:",errMsg);
-       }
-  	});
+        }
+    });
+}
+
+function prepare_modal() {
+    var weightMax;
+    var correctPercent;
+    var currentLowest = {percent: 100, id:0}; //initial value to test against
+    var lowestScoreFeedbackArray = [0,0,0,0,0]; //initial values: topic_id, alt1, alt2...
+    var quizResult = {
+        topics: [],
+        keywords: [],
+        lowestFeedbackArray: []
+    };
+
+    for (var i = 0; i < chosenTopics.length; i++) {
+        weightMax = 0;
+        for (var j = 0; j < chosenTopics[i].keywords.length;j++) {
+            weightMax += parseInt(chosenTopics[i].keywords[j].weight);
+        }
+        correctPercent = Math.round( (chosenTopics[i].answerWeightSum/weightMax)*100);
+        if (correctPercent < currentLowest.percent) {
+            currentLowest.id = chosenTopics[i].id;
+            currentLowest.percent = correctPercent;
+        }
+        quizResult.topics.push({
+            id: chosenTopics[i].id,
+            correctPercent: correctPercent
+        });
+    }
+    quizResult.keywords = presentKeywordIds; //id's are unique, no need to connect with topics
+    //activate modal
+    if (currentLowest.percent < 20) {
+        //set correct topic to have student report alternatives on
+        lowestScoreFeedbackArray[0] = currentLowest.id;
+        quizResult.lowestFeedbackArray = lowestScoreFeedbackArray;
+        //prepare modal itself
+        $('#modal-hidden-input').val(JSON.stringify(quizResult));
+        //activate modal
+        $('#feedback-modal').modal({
+            show : true,
+            keyboard : false,
+            backdrop : false
+        });
+    }
+    //skip modal and send data to db
+    else {
+        quizResult.lowestFeedbackArray = lowestScoreFeedbackArray; //uses default values, handles in php
+        send_final(quizResult);
+    }
+}
+
+//modal is activated in change_topic() through prepare_modal()
+function feedback_modal_onclick() {
+    var quizResult = JSON.parse($('#modal-hidden-input').val());
+    for (var i = 1; i < 5; i++) {
+        quizResult.lowestFeedbackArray[i] = $('#' + i).is(":checked");
+    }
+    send_final(quizResult); //has to have some version of quizResult
 }

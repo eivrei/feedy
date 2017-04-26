@@ -9,7 +9,7 @@
 	if($mysqli->connect_error){
 		die("Connection failed: " . $mysqli->connect_error);
 	}
-	//Distinct not needed?
+
 	$sql = "SELECT DISTINCT Lecture.lecture_id, QuizTopic.lecture_id, QuizTopic.topic_id, QuizTopic.topic FROM Lecture 
 			INNER JOIN QuizTopic ON Lecture.lecture_id = QuizTopic.lecture_id
 			WHERE Lecture.lecture_id='$id'";
@@ -24,6 +24,5 @@
 	else {
 		echo("NO DATA");
 	}
-
 
 	$mysqli->close();
