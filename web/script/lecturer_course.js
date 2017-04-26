@@ -59,7 +59,7 @@ function view_quiz(button) {
 function delete_quiz(button) {
     if (confirm("Are you sure?")) {
         $.get("../../php/lecturer_delete_quiz.php?lecture=" + button.value, function (data) {
-			data = data.split("|");
+			data = data.replace(/(\r\n|\n|\r)/gm,"").split("|");
 			if (data[0] === "Stats deleted" && data[1] === "Topics deleted"){
 				alert("The quiz was successfully deleted");
 				location.reload();
