@@ -26,7 +26,7 @@ if (login_check($mysqli) == true) {
       <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-left" href="../index.php">
+            <a class="navbar-left" href="../">
               <img src="../img/FEEDY_logo_eee_small.png" id="feedy_logo" alt="Feedy" />
             </a>
           </div>
@@ -42,7 +42,6 @@ if (login_check($mysqli) == true) {
       	<h3>Registration successful! Click the <a href="../"><img src="../img/FEEDY_logo_black_small.png" alt="FEEDY" id="intext_logo" /></a> logo to return to the login page. </h3>
       </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>

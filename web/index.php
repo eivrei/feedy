@@ -23,7 +23,7 @@ getEmail($mysqli);
       <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-left" href="./index.php">
+            <a class="navbar-left" href="./">
               <img src="img/FEEDY_logo_eee_small.png" id="feedy_logo" alt="Feedy" />
             </a>
           </div>
@@ -64,9 +64,9 @@ getEmail($mysqli);
                             </div>
                         </li>
                         <li class="divider top-divider"></li>
-                          <li><a href="https://org.ntnu.no/pugruppe100/sjid/matboks/web/html/lecturer/courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
+                          <li><a href="html/lecturer/courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
                         <li class="divider"></li>
-                          <li><a href="https://org.ntnu.no/pugruppe100/sjid/matboks/web">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
+                          <li><a href="./">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
                   </ul>
                   </li>
                 </ul>

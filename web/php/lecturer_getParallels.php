@@ -33,8 +33,8 @@
 	}
 	else {
 		//webscrape
-		$program_dir = escapeshellarg("../../pugruppe100/server/web_scraper.py"); //remember to update
-		$return = exec("../../python_env/bin/python3 $program_dir $course_code");
+		$program_dir = escapeshellarg("../../server/web_scraper.py"); //remember to update
+		$return = exec("../../../python_env/bin/python3 $program_dir $course_code");
 		$returnSplit = explode(':', $return);
 		if ($returnSplit[0] != "There is no information about this course" && $returnSplit[0] != "There was en error writing to the db" ){
 			$result2 = $conn->query($sql); //Safeguarding against incorrect seeker info
