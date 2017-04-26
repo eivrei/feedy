@@ -2,20 +2,41 @@ h1{
 	padding-top: 50px;
 	text-align: center;
 }
+h2{
+  text-align: center;
+}
 #student{
 	margin-top: 10px;
-	text-align: left;
 	max-width: 330px;
+}
+#lecturer{
+  margin-top: 10px;
+  max-width: 330px;
 }
 #intext_logo{
 	height: 40px;
 	padding-bottom: 7px;
 }
+#lbutton{
+  font-size: 24px;
+  height: 80px;
+  padding-bottom: 10px;
+  padding-top: 22px;
+  width: 300px;
+}
+#register{
+  text-align: center;
+  margin: 0 auto;
+}
 #sbutton{
-	height: 80px;
-	width: 300px;
-	padding-top: 22px;
 	font-size: 24px;
+  height: 80px;
+  padding-top: 22px;
+  width: 300px;
+}
+.error{
+  color: red;
+  text-align: center;
 }
 .form-signin {
   max-width: 330px;

@@ -1,14 +1,13 @@
 <?php
-	$servername = "mysql.stud.ntnu.no";
-	$db_username = "magnukun_secure";
-	$db_password = "YEa2VJXHxmWQ";
-	$db_name = "magnukun_pudb";
-	$conn = new mysqli($servername, $db_username, $db_password, $db_name);
-	$conn->set_charset("utf8");
+	include_once '../includes/functions.php';
+	include_once '../includes/db_connect.php';
+
+	sec_session_start();
+	$mysqli->set_charset("utf8");
 	$id = $_GET["id"];
 
-	if($conn->connect_error){
-		die("Connection failed: " . $conn->connect_error);
+	if($mysqli->connect_error){
+		die("Connection failed: " . $mysqli->connect_error);
 	}
 	//Distinct not needed?
 	$sql = "SELECT DISTINCT Course.course_code, Course.courseName, Parallel.programmes, Parallel.parallel_id FROM Lecturer 
@@ -20,9 +19,7 @@
 			WHERE Lecturer.username='$id'
 			ORDER BY Course.course_code ASC";
 
-	$result = $conn->query($sql);
-	
-	session_start();
+	$result = $mysqli->query($sql);
 	
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -32,7 +29,4 @@
 	else {
 		print_r($result);
 	}
-
-
-	$conn->close();
-?>
+	$mysqli->close();
