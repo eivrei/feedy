@@ -60,7 +60,7 @@ window.onload = function(){
 				var lecture_id = lectures[n].replace(/(\r\n|\n|\r)/gm,"");
 				var date = lectures[n+1].replace(/(\r\n|\n|\r)/gm,"");
 				var name = lectures[n+2].replace(/(\r\n|\n|\r)/gm,"");
-				toAppend += "<div class='lectureElement lecture row'><div class='lectureInfo col-md-6 col-xs-12'><p " + lecture_id +"'>" + date + "</p>"; //link course name to statistics page
+				toAppend += "<div class='lectureElement lecture row'><div class='col-md-6 col-xs-12'><p class='lectureInfo' " + lecture_id +"'>" + date + "</p>"; //link course name to statistics page
 				if (name !== "") { //lectures with names have quizzes already
 					toAppend += " <i class='lectureName'>" + name + "</i></div>";
 					toAppend += " <div class='innerLecture col-md-5 col-xs-12'> "; //create view button value = lecture_id

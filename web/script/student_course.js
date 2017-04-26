@@ -37,9 +37,9 @@ function createLectureTable(data) {
 		var lecture_id = lectureContent[i];
 		var date = lectureContent[i+1];
 		var name = lectureContent[i+2];
-		toAppend+= "<div class='lectureElement lecture row'><div class='lectureInfo col-md-6 col-xs-12'><p class='dateTime' " + lecture_id +"'>" + date + "</p>"; //link course name to statistics page
+		toAppend+= "<div class='lectureElement lecture row'><div class='col-md-7 col-xs-12'><p class='lectureInfo' " + lecture_id +"'>" + date + "</p>"; //link course name to statistics page
 		if (name !== "") { //lectures with names have quizzes already
-			toAppend += " <span class='goodShit'><i class='lectureName'>" + name + "</i></div>";
+			toAppend += " <i class='lectureName'>" + name + "</i></div>";
 			toAppend += " <div class='innerLecture col-md-5 col-xs-12'> "; //create view button value = lecture_id
 			toAppend += " " + createTakeQuizButtonString(lecture_id); //create view button value = lecture_id
 		}
