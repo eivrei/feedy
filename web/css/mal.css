@@ -31,3 +31,6 @@ body{
 .top-divider{
 	margin-top: -4px !important;
 }
+.glyphicon-arrow-left{
+	margin-right: 5px;
+}
