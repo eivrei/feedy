@@ -45,7 +45,7 @@ function createStatString(statArray) {
 		for (var j = 0; j < currentSet.length; j++) { //for each comma-separeted element in currentSet
 			switch(j) {
 				case 0:
-					name = currentSet[j];
+					name = currentSet[j].replace(/(\r\n|\n|\r)/gm,"");
 					name = name.substr(1);
 					break;
 				case 1:
@@ -95,9 +95,11 @@ function createDataSetString(name, numAnswers, percentage, spread, keywords, alt
 
 function generateStatistics() {
     $.get("../../php/lecturer_generateStatistics.php?lecture=" + lecture_id, function (data) {
-        if(data !== "OK"){
-        	alert("Something went wrong. Contact the system administrator.");
-		}
+        if (data === "There are no answers to this lectureOK"){
+            alert("There are no answers to this lecture");
+        }else if (data !== "OK"){
+            alert("Something went wrong. Contact the system administrator.");
+        }
 		location.reload();
     });
 }
