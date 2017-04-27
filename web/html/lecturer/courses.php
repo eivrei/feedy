@@ -75,7 +75,7 @@ if (login_check($mysqli)){
                             </div>
                         </li>
                         <li class="divider top-divider"></li>
-                          <li><a href="courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
+                          <li><a href="courses.php">My courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
                         <li class="divider"></li>
                           <li><a href="../../">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
                   </ul>
@@ -89,12 +89,11 @@ if (login_check($mysqli)){
     
     <span>
     <a href = "../../" class="btn btn-primary" id="prevPage">
-      <span class="glyphicon glyphicon-arrow-left"></span>
-      Go back
+      <span class="glyphicon glyphicon-arrow-left"></span>Go back
     </a>
     <a href = "create_new.php" class="btn btn-success" id="newCourse">
       <span class="glyphicon glyphicon-plus"></span>
-      Create a new course
+      Add a new course
     </a>
     </span>
 
@@ -117,6 +116,8 @@ if (login_check($mysqli)){
         </form>
       </div>
     </div>
+
+      <div><h2>My courses:</h2></div>
         
     <div class="container-fluid row" id="div_courselist"></div>
   </div>
