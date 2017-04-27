@@ -23,7 +23,8 @@ if($mysqli->connect_error){
 		INNER JOIN Course ON Parallel.course_code = Course.course_code 
 		WHERE Parallel.parallel_id = '$parallel' AND Parallel.course_code = '$course' AND Lecture.lectureDate
 		BETWEEN '$start_date' AND '$end_date' AND Lecture.lectureName IS NOT NULL 
-		GROUP BY Lecture.lecture_id";
+		GROUP BY Lecture.lecture_id
+		ORDER BY Lecture.lectureDate ASC";
 	//does not check lecturer id variable - intentional/unneeded?
 	$result = $mysqli->query($sql);
 	
