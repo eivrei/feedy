@@ -5,50 +5,46 @@ var parallel_id =  hash[1];
 
 $(document).ready(function() {
 	$.get("../../php/student_getCourse.php?course=" + course_code + "_" + parallel_id, function (data) {
-		console.log(data);
-		if (data != "NO DATA") {
-		$("#course_name").html(course_code);
-		createLectureTable(data); //if on data length?
+		if (data.replace(/(\r\n|\n|\r)/gm,"") !== "NO DATA") {
+			$("#course_name").html(course_code);
+			createLectureTable(data); //if on data length?
 		}
 		else {
-		//console.log(data); //why?
+			$("#course_content").append("There are noe quizzes in this course at the moment. Try again later.");
 		}
 
 	});	
 });
 
 function take_quiz(button) {
-	console.log("in take quiz");
+	var redirectString = "quiz.php#" + button.value;
+	window.location = redirectString;
 }
 
 function createTakeQuizButtonString(lecture_id) {
-
-	var buttonString = "<button id='" + lecture_id + "' class='btn btn-md btn-primary' type='button'" ; //note: no end >
+	var buttonString = "<button class='takeQuiz btn btn-md-2 btn-primary' type='button'" ; //note: no end >
 	buttonString += "value=" + lecture_id + " onclick = take_quiz(this)>Take quiz";
-	buttonString +="</button>";
-	console.log(buttonString);
+	buttonString +="</button></span>";
 	return buttonString;
 }
 
 function createLectureTable(data) { 
-
 	var lectureContent = data.split("|"); //remember to check if pop is needed
 	lectureContent.pop();
-	var toAppend = "<div><span>"; //make divs possibly with id for each
+	var toAppend = ""; //make divs possibly with id for each
 	
 	for (var i = 0; i < lectureContent.length; i+=3) { //possibly -1 on length comparison
 		var lecture_id = lectureContent[i];
 		var date = lectureContent[i+1];
 		var name = lectureContent[i+2];
-		console.log("name =" ,name);
-		toAppend+= "<a href='statistics.html#" + lecture_id +"'>" + date + "</a>"; //link course name to statistics page
-		if (name != "NULL") { 
-			toAppend += " <i>" + name + "</i></span>";  
+		toAppend+= "<div class='lectureElement lecture row'><div class='col-md-7 col-xs-12'><p class='lectureInfo' " + lecture_id +"'>" + date + "</p>"; //link course name to statistics page
+		if (name !== "") { //lectures with names have quizzes already
+			toAppend += " <i class='lectureName'>" + name + "</i></div>";
+			toAppend += " <div class='innerLecture col-md-5 col-xs-12'> "; //create view button value = lecture_id
 			toAppend += " " + createTakeQuizButtonString(lecture_id); //create view button value = lecture_id
 		}
-		toAppend+="</div>";
+		toAppend+="</div></div><div class='line lecture'></div>";
 	}
 		//toAppend += "</br>";
-		console.log(toAppend);
 		$("#course_content").append(toAppend);
 }

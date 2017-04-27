@@ -1,8 +1,36 @@
 body{
 	background-color: #eee;
 }
-
 #feedy_logo{
 	height: 40px;
 	padding-top: 7px;
+}
+#prevPage{
+	margin: 5px 0 10px 0;
+}
+.divider{
+	margin: 5px !important;
+}
+.icon-size{
+    font-size: 87px;
+}
+.king{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+.navbar-login{
+    padding: 10px;
+    padding-bottom: 0;
+    width: 305px;
+}
+.navbar-login-session{
+	padding: 10px;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.top-divider{
+	margin-top: -4px !important;
+}
+.glyphicon-arrow-left{
+	margin-right: 5px;
 }

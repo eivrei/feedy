@@ -3,16 +3,16 @@ import os
 from pptx_extraction import extract
 from quiz_generator import *
 from quiz_sender import QuizSender
-from db_connector import DbConnector
+from db_connector import DBConnector
 
 
-class QuizGenerationProgram(DbConnector):
+class QuizGenerationProgram(DBConnector):
     def __init__(self, filename, lecture_id):
         self.filename = filename  # filename on format word_word_word
         self.lecture_id = lecture_id
-        self.path = "/home/groupswww/pugruppe100/pugruppe100/server/temp/" + self.filename + ".pptx"
-        self.raw_data = ""
-        self.quiz = ""
+        self.path = "/home/groupswww/pugruppe100/feedy/server/temp/" + self.filename + ".pptx"
+        self.raw_data = None
+        self.quiz = None
 
     def run(self):
         # Generate raw data from pptx file

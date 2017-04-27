@@ -14,10 +14,12 @@ class QuizGenerator:
                              'UH'}  # uses Penn Treebank Tagset
 
     # INPUTS:
-    # data is a list containing data from each slide of the form [topic1_data, topic2_data, ...]
-    # where each "topicX_data"-field is of the form [title, keyword_1, keyword_2, ...]
-    def __init__(self, data, quiz_language='english'):
-        self.data = data
+    # - "pptx_data": a list containing data from each slide on the form [topic1_data, topic2_data, ...]
+    #    where each "topicX_data"-field is of the form [title, bullet1, bullet2, ...]
+    # - "quiz_language": the language used by nltk for POS_tagger and stopwords list
+    #    for now, only english is supported
+    def __init__(self, pptx_data, quiz_language='english'):
+        self.pptx_data = pptx_data
         self.quiz_language = quiz_language
         self.quiz = None
 
@@ -25,24 +27,25 @@ class QuizGenerator:
         self.clean_data()
         self.make_quiz()
 
-    # Cleaning the data in preparation of quiz generation
+    # Clean self.pptx_data in preparation of quiz generation
     def clean_data(self):
         cleaned_data = []
 
-        self.data.pop(0)  # Always remove first page, which is assumed to be an intro-page
-        if self.data[0][0] == 'Contents':
-            self.data.pop(0)
+        self.pptx_data.pop(0)  # Always remove first page, which is assumed to be an intro-page
+        if self.pptx_data[0][0] == 'Contents':
+            self.pptx_data.pop(0)
 
         # Remove empty topics
-        self.data = [topic_data for topic_data in self.data if len(topic_data) > 2]
+        self.pptx_data = [topic_data for topic_data in self.pptx_data if len(topic_data) > 2]
 
+        # Merge identically named slides
         merged_data = []
         merged_topics = []
-        for topic_id in range(len(self.data)):
-            topic_data = self.data[topic_id]
+        for topic_id in range(len(self.pptx_data)):
+            topic_data = self.pptx_data[topic_id]
             topic = topic_data[0]
             merged_data.append(topic_data)
-            for other_topic_data in self.data[topic_id+1:]:
+            for other_topic_data in self.pptx_data[topic_id+1:]:
                 other_topic = other_topic_data[0]
                 if other_topic in merged_topics:  # If already merged into "merged_data"
                     continue
@@ -63,20 +66,15 @@ class QuizGenerator:
 
                 cleaned_data[len(cleaned_data)-1].append(datum)
 
-        self.data = cleaned_data
+        self.pptx_data = cleaned_data
 
-    # Idea for extension: use PyDictionary to attach more words to the title
-
-    # Some methods here for cleansing data
-    #       - merge topics with same or similar title
-
-    # Make the actual quiz in the agreed-upon format
+    # Make the actual quiz in the format [topic, (keyword1, weight1), (keyword2, weight2), ...]
     def make_quiz(self):
         # Define the initial weight for all words included in presentation itself
         default_weight = 10
 
         quiz = []
-        for topic_data in self.data:
+        for topic_data in self.pptx_data:
             topic = topic_data[0]
             quiz.append([topic])
 
@@ -92,6 +90,7 @@ class QuizGenerator:
                                        default_weight)
                         current_quiz_topic_data[kw_index] = new_kw_data
 
+            # Add keywords extracted from wikipedia page on topic, if possible
             try:
                 wiki_kws = WikipediaKeywordExtractor(topic, self.quiz_language).extract_keywords()
 
@@ -104,10 +103,14 @@ class QuizGenerator:
                         current_quiz_topic_data[kw_index][1] += wiki_kws[keyword]
 
             # If wikipedia search for topic produces no results, simply move on to next topic
+            except wikipedia.exceptions.PageError:
+                continue
             except ValueError:
                 continue
             except wikipedia.exceptions.DisambiguationError:
                 continue
+            except Exception as e:
+                print('Unhandled exception:', e)
 
         # Remove the weakest keywords (weight < 10)
         quiz = [[quiz_data[i] for i in range(len(quiz_data)) if i == 0 or
@@ -129,15 +132,15 @@ def rem_grammatical_words(text, language):
     return lexical_words
 
 
-# Removes all non-alphanumeric symbols except dashes and underscores connecting words
+# Remove all non-alphanumeric symbols except spaces, dashes and underscores from "text"
 def rem_non_alphanumeric_symbols(text):
-    whitelist = string.ascii_letters + string.digits + ' _-'
+    whitelist = string.ascii_letters + string.digits + ' -_'
     clean_text = ''.join([char for char in text if char in whitelist]).lower()
 
     return clean_text
 
 
-# Removes all duplicate words
+# Remove all duplicate words from "text"
 # Should not be necessary, as duplicates are now handled (more effectively) in make_quiz() method
 def rem_duplicates(text):
     unique_text = ' '.join(OrderedDict.fromkeys(text.split()))

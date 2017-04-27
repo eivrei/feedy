@@ -2,12 +2,12 @@ import sys
 import json
 import urllib.request
 from datetime import datetime
-from db_connector import DbConnector
+from db_connector import DBConnector
 
 
 # The webscraper uses NTNU's sites to extract lecture information for a specific course code
 # and updates our database with information on course, lecture and parallel.
-class WebScraper(DbConnector):
+class CourseGenerator(DBConnector):
     def __init__(self, course_code):
         self.year = str(datetime.now().year)  # Find current year
         self.course_code = course_code.upper()
@@ -28,6 +28,9 @@ class WebScraper(DbConnector):
             if self.lectures:
                 self.update_db()
                 self.commit()
+                print("Success")
+            else:
+                print("There is no information about this course")
         except KeyError:
             print("There is no information about this course")
         except Exception as error:
@@ -74,7 +77,7 @@ class WebScraper(DbConnector):
     def get_raw_data(self):
         # NTNU's website is giving different responses. Run scraper several times to assure we are getting all data
         for i in range(10):
-            raw_data = json.loads(urllib.request.urlopen(self.url).read())['course']['summarized']
+            raw_data = json.loads(urllib.request.urlopen(self.url).read().decode('utf8'))['course']['summarized']
             if len(raw_data) > len(self.raw_data):
                 self.raw_data = raw_data
 
@@ -98,7 +101,7 @@ class WebScraper(DbConnector):
 
     def print_lectures(self):
         for lecture in self.lectures:
-            print(lecture.to_string())
+            print(str(lecture))
 
 
 class Lecture:
@@ -115,11 +118,11 @@ class Lecture:
     def generate_datetime(self):
         return datetime.strptime(self.year + "-W" + self.week + "-" + self.day + " " + self.from_time,  "%Y-W%W-%w %H:%M")
 
-    def to_string(self):
+    def __str__(self):
         return "This lecture is on day " + str(self.day) + " from " + self.from_time + " to " + self.to_time + \
                " the week " + str(self.week) + " for these programmes: " + self.programmes + \
                ". That results in this datetime " + str(self.datetime)
 
 if __name__ == '__main__':
-    web_scraper = WebScraper(sys.argv[1])
+    web_scraper = CourseGenerator(sys.argv[1])
     web_scraper.run()

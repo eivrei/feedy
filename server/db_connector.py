@@ -3,7 +3,7 @@ import mysql.connector
 
 
 # Class to connect files to our database
-class DbConnector(ABC):
+class DBConnector(ABC):
     db_connection = mysql.connector.connect(user='magnukun_secure', password='YEa2VJXHxmWQ',
                                             host='mysql.stud.ntnu.no',
                                             database='magnukun_pudb')

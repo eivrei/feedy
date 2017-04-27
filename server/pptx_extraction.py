@@ -20,20 +20,20 @@ def extract(filepath):
                 if paragraph.level > 1:
                     continue
                 paragraph_text = "".join(run.text for run in paragraph.runs)
-
-                # If point is subpoint -> make new question with subpoints as points
-                if paragraph.level > last_indent_level:
-                    sub_points.extend([slide_data[-1], paragraph_text])
-                    number_of_sub_questions += 1
-                elif paragraph.level == 1:
-                    sub_points.append(paragraph_text)
-                elif paragraph.level < last_indent_level:
-                    all_data.append(sub_points)
-                    slide_data.append(paragraph_text)
-                    sub_points = []
-                else:
-                    slide_data.append(paragraph_text)
-                last_indent_level = paragraph.level
+                if paragraph_text != "":
+                    # If point is subpoint -> make new question with subpoints as points
+                    if paragraph.level > last_indent_level:
+                        sub_points.extend([slide_data[-1], paragraph_text])
+                        number_of_sub_questions += 1
+                    elif paragraph.level == 1:
+                        sub_points.append(paragraph_text)
+                    elif paragraph.level < last_indent_level:
+                        all_data.append(sub_points)
+                        slide_data.append(paragraph_text)
+                        sub_points = []
+                    else:
+                        slide_data.append(paragraph_text)
+                    last_indent_level = paragraph.level
 
         # This line ensures that a subpoint with its points is behind its parent point in all_data.
         all_data.insert(len(all_data) - number_of_sub_questions, slide_data)
