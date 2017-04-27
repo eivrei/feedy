@@ -1,13 +1,12 @@
 var hash = window.location.hash.substr(1);
 hash = hash.split("_");
 var course_code = hash[0];
-var course_name = hash[1];
-var parallel_id = hash[2];
+var parallel_id = hash[1];
 
 $(document).ready(function() {
 	$.get("../../php/lecturer_course.php?course=" + course_code + "_" + parallel_id, function (data) {
 		if (data !== "NO DATA") {
-			$("#course_name").html(course_code + " - " + course_name);
+			$("#course_name").html(course_code + " Lectures");
 			createLectureTable(data); //if on data length?
 		}
 		else {

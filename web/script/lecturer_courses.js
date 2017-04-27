@@ -9,7 +9,7 @@ $(function retrieveElements() {
 			var course_name = courses[i+1].replace(/(\r\n|\n|\r)/gm,"");
 			var parallels = courses[i+2].replace(/(\r\n|\n|\r)/gm,"");
 			var parallel_id = courses[i+3].replace(/(\r\n|\n|\r)/gm,"");
-			$("#div_courselist").append("<div class='courseElement' onclick=\"javascript:location.href='course.php#" + course_code + "_" + course_name + "_" + parallel_id + "';\"><p class='courseName'>" + //generate correct link path
+			$("#div_courselist").append("<div class='courseElement' onclick=\"javascript:location.href='course.php#" + course_code + "_" + parallel_id + "';\"><p class='courseName'>" + //generate correct link path
 										course_code + " " + course_name + " </p><p class='parallelName'>" + //generate actual link on page
 										parallels + "</p></div>"); //Display related programmes 
 										//remember "fake" space
