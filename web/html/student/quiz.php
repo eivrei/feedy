@@ -88,10 +88,8 @@ if (login_check($mysqli)){
 		<div class="row">
 			<div class="col-md-4">
 				<div class="input-group" id="adv-search">
-					<input type="text" class="form-control" placeholder="Search for courses" />
 					<div class="input-group-btn">
 						<div class="btn-group" role="group">
-					<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 						</div>
 					</div>
 				</div>
@@ -110,9 +108,6 @@ if (login_check($mysqli)){
 	</div>
 
     <div class="bs-example">
-        <!-- Button HTML (to Trigger Modal) -->
-        <a href="#feedback-modal" class="btn btn-lg btn-primary" data-toggle="modal">Launch Demo Modal</a>
-
         <!-- Modal HTML -->
         <!-- see student_quiz.js for details on feedback_modal_onclick(), needs correct hidden value to run -->
         <div id="feedback-modal" class="modal fade">
