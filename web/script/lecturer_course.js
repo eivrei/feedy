@@ -1,7 +1,7 @@
 var hash = window.location.hash.substr(1);
 hash = hash.split("_");
 var course_code = hash[0];
-var course_name = hash[0];
+var course_name = hash[1];
 var parallel_id = hash[2];
 
 $(document).ready(function() {
