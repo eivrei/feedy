@@ -14,8 +14,10 @@ class QuizGenerator:
                              'UH'}  # uses Penn Treebank Tagset
 
     # INPUTS:
-    # data is a list containing data from each slide of the form [topic1_data, topic2_data, ...]
-    # where each "topicX_data"-field is of the form [title, keyword_1, keyword_2, ...]
+    # - "pptx_data": a list containing data from each slide on the form [topic1_data, topic2_data, ...]
+    #    where each "topicX_data"-field is of the form [title, bullet1, bullet2, ...]
+    # - "quiz_language": the language used by nltk for POS_tagger and stopwords list
+    #    for now, only english is supported
     def __init__(self, pptx_data, quiz_language='english'):
         self.pptx_data = pptx_data
         self.quiz_language = quiz_language
@@ -25,7 +27,7 @@ class QuizGenerator:
         self.clean_data()
         self.make_quiz()
 
-    # Cleaning the data in preparation of quiz generation
+    # Clean self.pptx_data in preparation of quiz generation
     def clean_data(self):
         cleaned_data = []
 
@@ -36,6 +38,7 @@ class QuizGenerator:
         # Remove empty topics
         self.pptx_data = [topic_data for topic_data in self.pptx_data if len(topic_data) > 2]
 
+        # Merge identically named slides
         merged_data = []
         merged_topics = []
         for topic_id in range(len(self.pptx_data)):
@@ -65,12 +68,7 @@ class QuizGenerator:
 
         self.pptx_data = cleaned_data
 
-    # Idea for extension: use PyDictionary to attach more words to the title
-
-    # Some methods here for cleansing data
-    #       - merge topics with same or similar title
-
-    # Make the actual quiz in the agreed-upon format
+    # Make the actual quiz in the format [topic, (keyword1, weight1), (keyword2, weight2), ...]
     def make_quiz(self):
         # Define the initial weight for all words included in presentation itself
         default_weight = 10
@@ -92,6 +90,7 @@ class QuizGenerator:
                                        default_weight)
                         current_quiz_topic_data[kw_index] = new_kw_data
 
+            # Add keywords extracted from wikipedia page on topic, if possible
             try:
                 wiki_kws = WikipediaKeywordExtractor(topic, self.quiz_language).extract_keywords()
 
@@ -133,15 +132,15 @@ def rem_grammatical_words(text, language):
     return lexical_words
 
 
-# Removes all non-alphanumeric symbols except dashes and underscores connecting words
+# Remove all non-alphanumeric symbols except spaces, dashes and underscores from "text"
 def rem_non_alphanumeric_symbols(text):
-    whitelist = string.ascii_letters + string.digits + ' _-'
+    whitelist = string.ascii_letters + string.digits + ' -_'
     clean_text = ''.join([char for char in text if char in whitelist]).lower()
 
     return clean_text
 
 
-# Removes all duplicate words
+# Remove all duplicate words from "text"
 # Should not be necessary, as duplicates are now handled (more effectively) in make_quiz() method
 def rem_duplicates(text):
     unique_text = ' '.join(OrderedDict.fromkeys(text.split()))
