@@ -73,7 +73,7 @@ if (login_check($mysqli)){
                             </div>
                         </li>
                         <li class="divider top-divider"></li>
-                          <li><a href="../lecturer/courses.php">Your courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
+                          <li><a href="../lecturer/courses.php">My courses<span class="glyphicon glyphicon-education pull-right"></span></a></li>
                         <li class="divider"></li>
                           <li><a href="../../">Return to front page<span class="glyphicon glyphicon-home pull-right"></span></a></li>
                   </ul>
@@ -87,11 +87,8 @@ if (login_check($mysqli)){
     <div class="container" id="searchbar">
 
       <a href = "../../" class="btn btn-primary" id="prevPage">
-        <span class="glyphicon glyphicon-arrow-left"></span>
-        Go back
+        <span class="glyphicon glyphicon-arrow-left"></span>Go back
       </a>    
-
-
 
       <div class="row">
         <div class="col-md-4">
@@ -111,7 +108,7 @@ if (login_check($mysqli)){
           </form>
         </div>
       </div>
-
+        <div><h2>Pick a course</h2></div>
       <div id="div_courselist">
       </div>
     </div>
