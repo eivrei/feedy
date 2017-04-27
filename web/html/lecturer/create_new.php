@@ -1,7 +1,7 @@
 <?php
 include_once '../../includes/db_connect.php';
 include_once '../../includes/functions.php';
- 
+
 sec_session_start();
 if (login_check($mysqli)){
   getName($mysqli);
@@ -19,7 +19,7 @@ if (login_check($mysqli)){
     <link href="../../img/favicon.ico" rel="icon" type="image/x-icon">
     <!-- css -->
     <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/mal.css" rel="stylesheet">    
+    <link href="../../css/mal.css" rel="stylesheet">
     <link href="../../css/courses.css" rel="stylesheet">
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -88,13 +88,11 @@ if (login_check($mysqli)){
     <a href = "courses.php" class="btn btn-primary" id="prevPage">
       <span class="glyphicon glyphicon-arrow-left"></span>Go back
     </a>
-	
-	<h2 id="course_name"></h2>
-	
+      <h5>Only courses for this semester are available.</h5>
     <div class="row" id="searchbar">
       <div class="col-md-4">
         <div class="input-group" id="adv-search">
-          <input id="course-search" type="text" class="form-control" 
+          <input id="course-search" type="text" class="form-control"
           placeholder="Search for a course" />
           <div class="input-group-btn">
             <div class="btn-group" role="group">
@@ -103,8 +101,8 @@ if (login_check($mysqli)){
           </div>
         </div>
       </div>
-        <div><h3>Only courses for this semester are available.</h3></div>
     </div>
+      <h2 id="course_name"></h2>
 	<div class="container-fluid row" id="div_pallellist">
     </div>
   </div>
