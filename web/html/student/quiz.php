@@ -114,7 +114,7 @@ if (login_check($mysqli)){
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 id = "modal-title" class="modal-title">You scored less than 20% in one or more topic </h3>
+                        <h3 id = "modal-title" class="modal-title">You scored less than 20% in one or more topics </h3>
                     </div>
                     <div class="modal-body">
                         <h4> Which of the following apply to the presentation? </h4>
