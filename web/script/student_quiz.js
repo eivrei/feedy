@@ -63,7 +63,7 @@ function topic_answered() {
 
 //checks per topic (on clicking "send"
 function check_correctness() {
-	var answerText = document.getElementById("answer-input").value;
+	var answerText = document.getElementById("answer-input").value.replace(/,/g , "");
 	var answerSplit = answerText.split(" ");
 	var weightTotal = 0; //sums weight of matching user input matching keywords
 	var keywords = [];
