@@ -5,7 +5,6 @@ var progress = 0;
 var chosenTopics = [];
 var numAnswered = 0;
 var presentKeywordIds = [];
-
 $(document).ready(function() {
 	$.get("../../php/student_getQuiz.php?id=" + lecture_id, function (data) {
 		if (data !== "NO DATA") {
