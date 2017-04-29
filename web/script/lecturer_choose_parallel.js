@@ -1,18 +1,21 @@
+/**
+ * Created by eivindreime on 27.04.2017.
+ */
 function searchForCourse() {
-	var to_search = document.getElementById("course-search").value;
-	//consider text validation/case-insensitivity
-	$.get("../../php/lecturer_getParallels.php?course=" + to_search, function (data) {
-		//PHP tries webscraping on no results by itself
-		console.log(data);
-		data = data.split("|");
-		
-		if (data.length > 1) {
-			createParallelTable(data);
-		}
-		else {
-		alert(data);
-		}
-	});
+    var to_search = document.getElementById("course-search").value;
+    //consider text validation/case-insensitivity
+    $.get("../../php/lecturer_getParallels.php?course=" + to_search, function (data) {
+        //PHP tries webscraping on no results by itself
+        console.log(data);
+        data = data.split("|");
+
+        if (data.length > 1) {
+            createParallelTable(data);
+        }
+        else {
+            alert(data);
+        }
+    });
 };
 //set data = 0 to retrieve data on to_search, otherwise leave out to_search (uses default value)
 function createParallelTable(data) {
@@ -38,7 +41,7 @@ function selectParallel(div) {
     $.get("../../php/lecturer_addToParallel.php?parallel_and_id=" + parallel_id + "_" + lecturer_id, function (data) {
         //PHP checks if added already, otherwise adds. Return data reflects this (SUCSESS|error)
         //console.log("in select", data, "end data");
-        if (data == "SUCSESS") {
+        if (data.replace(/(\r\n|\n|\r)/gm,"") == "SUCSESS") {
             alert("You are now added to this course");
         }
         else {

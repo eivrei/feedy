@@ -11,7 +11,7 @@
 	}
 	
 	$sql = "SELECT Lecture.lectureStats FROM Lecture
-			WHERE Lecture.lecture_id = '$lecture_id'";
+			WHERE Lecture.lecture_id = '$lecture_id' AND Lecture.lectureStats IS NOT NULL";
 
 	$result = $mysqli->query($sql);
 	

@@ -6,7 +6,7 @@ var parallel_id = hash[1];
 $(document).ready(function() {
 	$.get("../../php/lecturer_course.php?course=" + course_code + "_" + parallel_id, function (data) {
 		if (data !== "NO DATA") {
-			$("#course_name").html(course_code + " Lectures");
+			$("#course_name").html(course_code + " - Lectures");
 			createLectureTable(data); //if on data length?
 		}
 		else {
