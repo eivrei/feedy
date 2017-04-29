@@ -40,8 +40,8 @@ function deleteQuizData(button) {
 	if (delete_topic) {
         if (confirm("Are you sure?")) {
             $.get("../../php/lecturer_delete_quiz_data.php?topic=" + button.value.split("_")[1], function (data) {
-                if (data === "Data deleted") {
-                    alert("The quiz was successfully deleted");
+                if (data.replace(/(\r\n|\n|\r)/gm,"") === "Data deleted") {
+                    alert("The topic was successfully deleted");
                     location.reload();
                 }
             });
